@@ -17,6 +17,7 @@ import {
   Share2,
 } from "lucide-react";
 import { useState } from "react";
+import DOMPurify from "dompurify";
 
 const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
 
@@ -205,7 +206,10 @@ const ProjectDetail = () => {
                   <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-3">
                     {t.projectDetail.aboutProject}
                   </h2>
-                  <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                  <div
+                    className="prose prose-sm md:prose-base max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-ceiba-terra"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description) }}
+                  />
                 </motion.div>
               )}
 
