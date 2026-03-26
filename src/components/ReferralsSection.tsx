@@ -7,8 +7,8 @@ const ReferralsSection = () => {
   const { t } = useLanguage();
 
   const steps = [
-    { icon: Share2, title: t.referrals.step1Title, desc: t.referrals.step1Desc },
-    { icon: ShoppingCart, title: t.referrals.step2Title, desc: t.referrals.step2Desc },
+    { icon: UserPlus, title: t.referrals.step1Title, desc: t.referrals.step1Desc },
+    { icon: ClipboardList, title: t.referrals.step2Title, desc: t.referrals.step2Desc },
     { icon: Banknote, title: t.referrals.step3Title, desc: t.referrals.step3Desc },
   ];
 
