@@ -48,13 +48,19 @@ const HeroSection = () => {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
               <Link to="/projects">
-                <Button size="lg" className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-ceiba-dark font-semibold text-base px-8 gap-2">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-ceiba-dark font-semibold text-base px-8 gap-2"
+                >
                   {t.hero.cta}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <a href="#nosotros">
-                <Button size="lg" className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-white font-semibold text-base px-8">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-white font-semibold text-base px-8"
+                >
                   {t.hero.ctaSecondary}
                 </Button>
               </a>
@@ -88,7 +94,7 @@ const HeroSection = () => {
               <img src={hero3} alt="Proyecto" className="w-full h-full object-cover" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/50 to-transparent" />
               <div className="absolute bottom-2 left-2 right-2 bg-white/10 backdrop-blur-md rounded-lg px-2 py-1.5 border border-white/10">
-                <div className="text-lg font-display font-bold text-white">350+</div>
+                <div className="text-lg font-display font-bold text-white">1446+</div>
                 <div className="text-[10px] text-white/60">Lotes vendidos</div>
               </div>
             </div>
@@ -105,7 +111,13 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="absolute top-0 left-0 w-[55%] h-[65%] rounded-3xl overflow-hidden shadow-2xl"
             >
-              <img src={hero1} alt="Familia en proyecto" className="w-full h-full object-cover" width={896} height={1152} />
+              <img
+                src={hero1}
+                alt="Familia en proyecto"
+                className="w-full h-full object-cover"
+                width={896}
+                height={1152}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/40 to-transparent" />
             </motion.div>
 
@@ -115,7 +127,14 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="absolute top-4 right-0 w-[42%] h-[38%] rounded-2xl overflow-hidden shadow-xl"
             >
-              <img src={hero2} alt="Vista aérea" className="w-full h-full object-cover" width={896} height={672} loading="lazy" />
+              <img
+                src={hero2}
+                alt="Vista aérea"
+                className="w-full h-full object-cover"
+                width={896}
+                height={672}
+                loading="lazy"
+              />
               <div className="absolute inset-0 bg-gradient-to-b from-ceiba-dark/20 to-transparent" />
             </motion.div>
 
@@ -125,7 +144,14 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="absolute bottom-0 right-0 w-[42%] h-[55%] rounded-2xl overflow-hidden shadow-xl"
             >
-              <img src={hero3} alt="Pareja revisando planos" className="w-full h-full object-cover" width={672} height={896} loading="lazy" />
+              <img
+                src={hero3}
+                alt="Pareja revisando planos"
+                className="w-full h-full object-cover"
+                width={672}
+                height={896}
+                loading="lazy"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/40 to-transparent" />
             </motion.div>
 
@@ -135,7 +161,14 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="absolute bottom-2 left-0 w-[53%] h-[30%] rounded-2xl overflow-hidden shadow-xl"
             >
-              <img src={hero4} alt="Entrada proyecto" className="w-full h-full object-cover" width={896} height={672} loading="lazy" />
+              <img
+                src={hero4}
+                alt="Entrada proyecto"
+                className="w-full h-full object-cover"
+                width={896}
+                height={672}
+                loading="lazy"
+              />
               <div className="absolute inset-0 bg-gradient-to-r from-ceiba-dark/50 to-transparent" />
               <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/10">
                 <div className="text-2xl font-display font-bold text-white">350+</div>
