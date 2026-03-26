@@ -54,12 +54,12 @@ const Navbar = () => {
         <div className="flex md:hidden items-center gap-2">
           <button
             onClick={toggleLang}
-            className="flex items-center gap-1 text-xs text-muted-foreground p-2"
+            className="flex items-center gap-1 text-xs text-white/80 p-2"
           >
             <Globe className="w-4 h-4" />
             {lang === "es" ? "EN" : "ES"}
           </button>
-          <button className="p-2" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button className="p-2 text-white" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
@@ -67,7 +67,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-background border-b border-border px-4 pb-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden bg-ceiba-terra border-b border-ceiba-terra/50 px-4 pb-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
           {navLinks.map((link) => (
             <a
               key={link.href}
