@@ -17,6 +17,7 @@ import {
   Share2,
 } from "lucide-react";
 import { useState } from "react";
+import DOMPurify from "dompurify";
 
 const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
 
