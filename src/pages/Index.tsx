@@ -34,7 +34,7 @@ const FeaturedProjects = () => {
           <p className="text-base md:text-lg text-muted-foreground">{t.projects.subtitle}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 mb-8 md:mb-10">
           {featured.map((project, i) => (
             <ProjectCard key={project._id} project={project} index={i} />
           ))}
