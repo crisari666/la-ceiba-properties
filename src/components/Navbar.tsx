@@ -59,7 +59,7 @@ const Navbar = () => {
             <Globe className="w-4 h-4" />
             {lang === "es" ? "EN" : "ES"}
           </button>
-          <button className="p-2 text-white" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button className="p-2" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
