@@ -12,7 +12,7 @@ const HeroSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-ceiba-hero">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-ceiba-terra">
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 right-1/3 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-ceiba-warm/8 blur-[150px]" />

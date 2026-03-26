@@ -72,7 +72,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="block text-sm font-medium text-white/80 hover:text-white py-3 border-b border-white/10 last:border-0"
+              className="block text-sm font-medium text-muted-foreground hover:text-foreground py-3 border-b border-border/50 last:border-0"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
