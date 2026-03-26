@@ -55,6 +55,7 @@ export const translations = {
       downloadBrochure: "Descargar brochure",
       viewPlans: "Ver planos",
       videoTour: "Video del proyecto",
+      gallery: "Galería",
       notFound: "Proyecto no encontrado",
     },
     assistant: {
