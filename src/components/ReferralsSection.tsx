@@ -1,6 +1,6 @@
 import { useLanguage } from "@/i18n/LanguageContext";
 import { motion } from "framer-motion";
-import { Share2, ShoppingCart, Banknote, ArrowRight } from "lucide-react";
+import { UserPlus, ClipboardList, Banknote, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ReferralsSection = () => {
