@@ -1,7 +1,8 @@
 import { useLanguage } from "@/i18n/LanguageContext";
 import type { Project } from "@/hooks/useProjects";
-import { MapPin, ExternalLink } from "lucide-react";
+import { MapPin, ArrowUpRight, Ruler } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
 
@@ -22,67 +23,71 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: index * 0.12, duration: 0.6, ease: "easeOut" }}
     >
-      <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden">
+      <Link
+        to={`/projects/${project._id}`}
+        className="group block relative rounded-2xl overflow-hidden bg-ceiba-dark aspect-[3/4] sm:aspect-[4/5] cursor-pointer"
+      >
+        {/* Background Image */}
         <img
           src={mainImage}
           alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
           loading="lazy"
         />
-        <div className="absolute top-3 right-3 bg-ceiba-dark/80 backdrop-blur-sm text-white text-[10px] md:text-xs font-semibold px-2.5 md:px-3 py-1 md:py-1.5 rounded-full">
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+        {/* Top badge */}
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-white/15 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">
+          <MapPin className="w-3 h-3" />
           {project.city}, {project.state}
         </div>
-      </div>
 
-      <div className="p-4 md:p-5">
-        <h3 className="font-display text-lg md:text-xl font-bold text-foreground mb-1.5 md:mb-2">
-          {project.title}
-        </h3>
+        {/* Bottom content */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 transform transition-transform duration-500">
+          <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-2 leading-tight">
+            {project.title}
+          </h3>
 
-        <div className="flex items-center gap-1.5 text-muted-foreground text-xs md:text-sm mb-2 md:mb-3">
-          <MapPin className="w-3.5 h-3.5" />
-          <span>{project.city}, {project.state} · {project.country}</span>
-        </div>
-
-        {project.amenities?.length > 0 && (
-          <div className="flex flex-wrap gap-1 md:gap-1.5 mb-3 md:mb-4">
-            {project.amenities.slice(0, 3).map((a) => (
-              <span key={a._id} className="text-[10px] md:text-xs bg-muted text-muted-foreground px-2 md:px-2.5 py-0.5 md:py-1 rounded-full">
-                {a.title}
-              </span>
-            ))}
-            {project.amenities.length > 3 && (
-              <span className="text-[10px] md:text-xs text-muted-foreground px-1">
-                +{project.amenities.length - 3}
-              </span>
-            )}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between pt-3 border-t border-border">
-          <div>
-            <span className="text-[10px] md:text-xs text-muted-foreground">{t.projects.from}</span>
-            <div className="text-base md:text-lg font-bold text-ceiba-terra">{formatPrice(project.priceSell)}</div>
-          </div>
-          {project.location && (
-            <a
-              href={project.location}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs md:text-sm text-ceiba-terra hover:text-ceiba-terra/80 transition-colors font-medium"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{t.projects.location}</span>
-            </a>
+          {project.amenities?.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {project.amenities.slice(0, 2).map((a) => (
+                <span
+                  key={a._id}
+                  className="text-[10px] md:text-xs bg-white/15 backdrop-blur-sm text-white/90 px-2.5 py-1 rounded-full border border-white/10"
+                >
+                  {a.title}
+                </span>
+              ))}
+              {project.amenities.length > 2 && (
+                <span className="text-[10px] md:text-xs text-white/60 px-1.5 py-1">
+                  +{project.amenities.length - 2}
+                </span>
+              )}
+            </div>
           )}
+
+          <div className="flex items-end justify-between">
+            <div>
+              <span className="text-[10px] md:text-xs text-white/60 uppercase tracking-wider">
+                {t.projects.from}
+              </span>
+              <div className="text-lg md:text-xl font-bold text-ceiba-warm">
+                {formatPrice(project.priceSell)}
+              </div>
+            </div>
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-ceiba-warm flex items-center justify-center transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+              <ArrowUpRight className="w-5 h-5 text-white" />
+            </div>
+          </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 };

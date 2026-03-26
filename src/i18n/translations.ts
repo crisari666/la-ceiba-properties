@@ -120,6 +120,16 @@ export const translations = {
       location: "Location",
       seeAll: "See all projects",
     },
+    projectDetail: {
+      backToProjects: "Back to projects",
+      aboutProject: "About the project",
+      commission: "Commission",
+      viewLocation: "View location",
+      downloadBrochure: "Download brochure",
+      viewPlans: "View plans",
+      videoTour: "Project video",
+      notFound: "Project not found",
+    },
     assistant: {
       title: "Meet Verónica",
       subtitle: "Your smart virtual assistant",
