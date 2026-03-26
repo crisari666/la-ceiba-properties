@@ -340,25 +340,6 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* Video section */}
-      {project.reelVideo && (
-        <section className="py-8 md:py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-xl md:text-2xl font-display font-bold text-foreground mb-6 text-center">
-              {t.projectDetail.videoTour}
-            </h2>
-            <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl">
-              <video
-                src={`${IMAGE_BASE}${project.reelVideo}`}
-                controls
-                className="w-full aspect-video"
-                poster={images[0]}
-              />
-            </div>
-          </div>
-        </section>
-      )}
-
       <Footer />
     </div>
   );
