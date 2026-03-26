@@ -55,6 +55,7 @@ export const translations = {
       downloadBrochure: "Descargar brochure",
       viewPlans: "Ver planos",
       videoTour: "Video del proyecto",
+      gallery: "Galería",
       notFound: "Proyecto no encontrado",
     },
     assistant: {
@@ -128,6 +129,7 @@ export const translations = {
       downloadBrochure: "Download brochure",
       viewPlans: "View plans",
       videoTour: "Project video",
+      gallery: "Gallery",
       notFound: "Project not found",
     },
     assistant: {
