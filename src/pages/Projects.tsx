@@ -16,26 +16,26 @@ const Projects = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="pt-28 pb-20">
+      <section className="pt-20 md:pt-28 pb-12 md:pb-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center max-w-2xl mx-auto mb-14"
+            className="text-center max-w-2xl mx-auto mb-8 md:mb-14"
           >
-            <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-3 md:mb-4">
               {t.projects.title}
             </h1>
-            <p className="text-lg text-muted-foreground">{t.projects.subtitle}</p>
+            <p className="text-base md:text-lg text-muted-foreground">{t.projects.subtitle}</p>
           </motion.div>
 
           {isLoading && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="bg-card border border-border rounded-2xl overflow-hidden">
                   <Skeleton className="aspect-[4/3] w-full" />
-                  <div className="p-5 space-y-3">
+                  <div className="p-4 md:p-5 space-y-3">
                     <Skeleton className="h-6 w-3/4" />
                     <Skeleton className="h-4 w-1/2" />
                     <Skeleton className="h-8 w-1/3" />
@@ -46,13 +46,13 @@ const Projects = () => {
           )}
 
           {error && (
-            <div className="text-center py-20 text-muted-foreground">
+            <div className="text-center py-12 md:py-20 text-muted-foreground">
               <p>Error loading projects. Please try again later.</p>
             </div>
           )}
 
           {!isLoading && !error && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {enabledProjects.map((project, i) => (
                 <ProjectCard key={project._id} project={project} index={i} />
               ))}
@@ -60,7 +60,7 @@ const Projects = () => {
           )}
 
           {!isLoading && !error && enabledProjects.length === 0 && (
-            <div className="text-center py-20 text-muted-foreground">
+            <div className="text-center py-12 md:py-20 text-muted-foreground">
               <p>No projects available at the moment.</p>
             </div>
           )}
