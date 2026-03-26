@@ -80,62 +80,35 @@ const ProjectDetail = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero Gallery */}
+      {/* Hero - Video or First Image */}
       <section className="pt-16 md:pt-20">
         <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-ceiba-dark">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={activeImage}
-              src={images[activeImage]}
-              alt={`${project.title} - ${activeImage + 1}`}
+          {project.reelVideo ? (
+            <video
+              src={`${IMAGE_BASE}${project.reelVideo}`}
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
               className="absolute inset-0 w-full h-full object-cover"
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              poster={images[0]}
             />
-          </AnimatePresence>
+          ) : (
+            <img
+              src={images[0]}
+              alt={project.title}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
 
           {/* Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-
-          {/* Navigation arrows */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </>
-          )}
-
-          {/* Image counter */}
-          {images.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveImage(i)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    i === activeImage ? "bg-white w-6" : "bg-white/40 hover:bg-white/60"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
           {/* Back button */}
           <Link
             to="/projects"
-            className="absolute top-4 left-4 flex items-center gap-2 bg-white/15 backdrop-blur-md text-white text-sm font-medium px-4 py-2 rounded-full border border-white/20 hover:bg-white/25 transition-colors"
+            className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-white/15 backdrop-blur-md text-white text-sm font-medium px-4 py-2 rounded-full border border-white/20 hover:bg-white/25 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             {t.projectDetail.backToProjects}
@@ -143,25 +116,75 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* Thumbnail strip */}
+      {/* Image Carousel */}
       {images.length > 1 && (
-        <div className="container mx-auto px-4 -mt-8 md:-mt-12 relative z-10">
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {images.map((img, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveImage(i)}
-                className={`flex-shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
-                  i === activeImage
-                    ? "border-ceiba-warm shadow-lg scale-105"
-                    : "border-transparent opacity-60 hover:opacity-100"
-                }`}
-              >
-                <img src={img} alt="" className="w-full h-full object-cover" />
-              </button>
-            ))}
+        <section className="py-6 md:py-10 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-4">
+              {t.projectDetail.gallery || "Galería"}
+            </h2>
+            <div className="relative">
+              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden bg-ceiba-dark">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeImage}
+                    src={images[activeImage]}
+                    alt={`${project.title} - ${activeImage + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </AnimatePresence>
+
+                {/* Navigation arrows */}
+                <button
+                  onClick={prevImage}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+
+                {/* Dots */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveImage(i)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        i === activeImage ? "bg-white w-6" : "bg-white/40 hover:bg-white/60"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Thumbnail strip */}
+              <div className="flex gap-2 md:gap-3 overflow-x-auto mt-3 pb-1 scrollbar-hide">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(i)}
+                    className={`flex-shrink-0 w-16 h-16 md:w-24 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                      i === activeImage
+                        ? "border-ceiba-warm shadow-lg scale-105"
+                        : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       )}
 
       {/* Content */}
