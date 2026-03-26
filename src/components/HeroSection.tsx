@@ -54,7 +54,7 @@ const HeroSection = () => {
                 </Button>
               </Link>
               <a href="#nosotros">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 text-base px-8">
+                <Button size="lg" className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-white font-semibold text-base px-8">
                   {t.hero.ctaSecondary}
                 </Button>
               </a>
