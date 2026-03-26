@@ -44,7 +44,7 @@ const Navbar = () => {
             <Globe className="w-4 h-4" />
             {lang === "es" ? "EN" : "ES"}
           </button>
-          <Button size="sm" className="bg-ceiba-warm hover:bg-ceiba-warm/90 text-white gap-2">
+          <Button size="sm" className="bg-ceiba-terra hover:bg-ceiba-terra/90 text-primary-foreground gap-2">
             <MessageCircle className="w-4 h-4" />
             {t.nav.assistant}
           </Button>
