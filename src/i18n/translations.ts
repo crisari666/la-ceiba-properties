@@ -129,6 +129,7 @@ export const translations = {
       downloadBrochure: "Download brochure",
       viewPlans: "View plans",
       videoTour: "Project video",
+      gallery: "Gallery",
       notFound: "Project not found",
     },
     assistant: {
