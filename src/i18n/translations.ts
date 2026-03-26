@@ -47,6 +47,16 @@ export const translations = {
       location: "Ubicación",
       seeAll: "Ver todos los proyectos",
     },
+    projectDetail: {
+      backToProjects: "Volver a proyectos",
+      aboutProject: "Sobre el proyecto",
+      commission: "Comisión",
+      viewLocation: "Ver ubicación",
+      downloadBrochure: "Descargar brochure",
+      viewPlans: "Ver planos",
+      videoTour: "Video del proyecto",
+      notFound: "Proyecto no encontrado",
+    },
     assistant: {
       title: "Conoce a Verónica",
       subtitle: "Tu asistente virtual inteligente",
