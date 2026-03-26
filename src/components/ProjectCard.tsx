@@ -3,7 +3,7 @@ import type { Project } from "@/hooks/useProjects";
 import { MapPin, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
-const IMAGE_BASE = "https://back.laceiba.group/uploads/";
+const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat("es-CO", {
