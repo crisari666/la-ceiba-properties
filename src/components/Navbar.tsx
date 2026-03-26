@@ -17,10 +17,10 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
-      <div className="container mx-auto flex items-center justify-between h-16 px-4">
+      <div className="container mx-auto flex items-center justify-between h-14 md:h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/ceiba-icon.png" alt="La Ceiba" className="h-9 w-auto" />
-          <span className="font-display text-xl font-bold text-foreground">La Ceiba</span>
+          <img src="/ceiba-icon.png" alt="La Ceiba" className="h-8 md:h-9 w-auto" />
+          <span className="font-display text-lg md:text-xl font-bold text-foreground">La Ceiba</span>
         </Link>
 
         {/* Desktop */}
@@ -51,30 +51,35 @@ const Navbar = () => {
         </div>
 
         {/* Mobile toggle */}
-        <button className="md:hidden p-2" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1 text-xs text-muted-foreground p-2"
+          >
+            <Globe className="w-4 h-4" />
+            {lang === "es" ? "EN" : "ES"}
+          </button>
+          <button className="p-2" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-background border-b border-border px-4 pb-4 space-y-3">
+        <div className="md:hidden bg-background border-b border-border px-4 pb-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground py-2"
+              className="block text-sm font-medium text-muted-foreground hover:text-foreground py-3 border-b border-border/50 last:border-0"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </a>
           ))}
-          <div className="flex items-center gap-3 pt-2">
-            <button onClick={toggleLang} className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Globe className="w-4 h-4" />
-              {lang === "es" ? "EN" : "ES"}
-            </button>
-            <Button size="sm" className="bg-ceiba-terra hover:bg-ceiba-terra/90 text-primary-foreground gap-2">
+          <div className="pt-3">
+            <Button size="sm" className="w-full bg-ceiba-terra hover:bg-ceiba-terra/90 text-primary-foreground gap-2">
               <MessageCircle className="w-4 h-4" />
               {t.nav.assistant}
             </Button>

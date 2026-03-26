@@ -12,60 +12,61 @@ const HeroSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-ceiba-hero">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-ceiba-hero">
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 right-1/3 w-[500px] h-[500px] rounded-full bg-ceiba-warm/8 blur-[150px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-ceiba-terra/6 blur-[120px]" />
+        <div className="absolute top-1/4 right-1/3 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-ceiba-warm/8 blur-[150px]" />
+        <div className="absolute bottom-0 left-0 w-[250px] md:w-[400px] h-[250px] md:h-[400px] rounded-full bg-ceiba-terra/6 blur-[120px]" />
       </div>
 
-      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-4 pt-20 pb-10 md:pt-24 md:pb-16 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left: text */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
+            className="text-center lg:text-left"
           >
-            <div className="flex items-center gap-2 mb-6">
-              <img src="/ceiba-icon.png" alt="" className="h-10 w-auto brightness-0 invert opacity-60" />
-              <span className="text-ceiba-warm/80 font-body text-sm tracking-widest uppercase">
+            <div className="flex items-center gap-2 mb-4 md:mb-6 justify-center lg:justify-start">
+              <img src="/ceiba-icon.png" alt="" className="h-8 md:h-10 w-auto brightness-0 invert opacity-60" />
+              <span className="text-ceiba-warm/80 font-body text-xs md:text-sm tracking-widest uppercase">
                 La Ceiba · Holding Inmobiliario
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-[1.1] mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white leading-[1.1] mb-4 md:mb-6">
               {t.hero.title}{" "}
               <span className="bg-gradient-to-r from-ceiba-warm to-ceiba-terra bg-clip-text text-transparent">
                 {t.hero.titleHighlight}
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-white/60 max-w-xl mb-10 font-body leading-relaxed">
+            <p className="text-base md:text-lg lg:text-xl text-white/60 max-w-xl mx-auto lg:mx-0 mb-8 md:mb-10 font-body leading-relaxed">
               {t.hero.subtitle}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
               <Link to="/projects">
-                <Button size="lg" className="bg-ceiba-warm hover:bg-ceiba-warm/90 text-ceiba-dark font-semibold text-base px-8 gap-2">
+                <Button size="lg" className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-ceiba-dark font-semibold text-base px-8 gap-2">
                   {t.hero.cta}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <a href="#nosotros">
-                <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 text-base px-8">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 text-base px-8">
                   {t.hero.ctaSecondary}
                 </Button>
               </a>
             </div>
 
-            <div className="flex flex-wrap gap-6 mt-14">
+            <div className="flex flex-wrap gap-4 md:gap-6 mt-8 md:mt-14 justify-center lg:justify-start">
               {[
                 { icon: Shield, label: "Inversión segura" },
                 { icon: TrendingUp, label: "Alta valorización" },
                 { icon: MapPin, label: "Ubicaciones premium" },
               ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2 text-white/40 text-sm">
+                <div key={label} className="flex items-center gap-2 text-white/40 text-xs md:text-sm">
                   <Icon className="w-4 h-4 text-ceiba-warm" />
                   <span>{label}</span>
                 </div>
@@ -73,9 +74,31 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          {/* Right: innovative image mosaic */}
+          {/* Mobile: compact image strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="lg:hidden grid grid-cols-3 gap-2 mt-2"
+          >
+            <div className="rounded-xl overflow-hidden aspect-[3/4]">
+              <img src={hero1} alt="Proyecto" className="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div className="rounded-xl overflow-hidden aspect-[3/4] relative">
+              <img src={hero3} alt="Proyecto" className="w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/50 to-transparent" />
+              <div className="absolute bottom-2 left-2 right-2 bg-white/10 backdrop-blur-md rounded-lg px-2 py-1.5 border border-white/10">
+                <div className="text-lg font-display font-bold text-white">350+</div>
+                <div className="text-[10px] text-white/60">Lotes vendidos</div>
+              </div>
+            </div>
+            <div className="rounded-xl overflow-hidden aspect-[3/4]">
+              <img src={hero2} alt="Proyecto" className="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </motion.div>
+
+          {/* Desktop: innovative image mosaic */}
           <div className="hidden lg:block relative h-[600px]">
-            {/* Main tall image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -86,7 +109,6 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/40 to-transparent" />
             </motion.div>
 
-            {/* Top right landscape */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, x: 40 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -97,7 +119,6 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-ceiba-dark/20 to-transparent" />
             </motion.div>
 
-            {/* Bottom right - couple */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -108,7 +129,6 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/40 to-transparent" />
             </motion.div>
 
-            {/* Bottom left accent card */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -117,14 +137,12 @@ const HeroSection = () => {
             >
               <img src={hero4} alt="Entrada proyecto" className="w-full h-full object-cover" width={896} height={672} loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-r from-ceiba-dark/50 to-transparent" />
-              {/* Floating stat on image */}
               <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/10">
                 <div className="text-2xl font-display font-bold text-white">350+</div>
                 <div className="text-xs text-white/60">Lotes vendidos</div>
               </div>
             </motion.div>
 
-            {/* Decorative elements */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
