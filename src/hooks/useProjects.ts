@@ -30,7 +30,7 @@ export interface Project {
 }
 
 const fetchProjects = async (): Promise<Project[]> => {
-  const res = await fetch("https://back.laceiba.group/rag/projects?enable=all");
+  const res = await fetch("https://back.laceiba.group/rag/projects?enable=true");
   if (!res.ok) throw new Error("Failed to fetch projects");
   return res.json();
 };
