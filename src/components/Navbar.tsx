@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between h-14 md:h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
           <img src="/ceiba-icon.png" alt="La Ceiba" className="h-8 md:h-9 w-auto" />
-          <span className="font-display text-lg md:text-xl font-bold text-foreground">La Ceiba</span>
+          <span className="font-display text-lg md:text-xl font-bold text-white">La Ceiba</span>
         </Link>
 
         {/* Desktop */}
