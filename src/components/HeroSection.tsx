@@ -171,7 +171,7 @@ const HeroSection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-ceiba-dark/50 to-transparent" />
               <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/10">
-                <div className="text-2xl font-display font-bold text-white">350+</div>
+                <div className="text-2xl font-display font-bold text-white">1446+</div>
                 <div className="text-xs text-white/60">Lotes vendidos</div>
               </div>
             </motion.div>
