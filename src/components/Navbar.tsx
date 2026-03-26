@@ -39,7 +39,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={toggleLang}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted"
+            className="flex items-center gap-1.5 text-sm text-white/80 hover:text-white transition-colors px-2 py-1 rounded-md hover:bg-white/10"
           >
             <Globe className="w-4 h-4" />
             {lang === "es" ? "EN" : "ES"}
