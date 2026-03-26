@@ -67,7 +67,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-ceiba-terra border-b border-ceiba-terra/50 px-4 pb-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden bg-background border-b border-border px-4 pb-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
           {navLinks.map((link) => (
             <a
               key={link.href}
