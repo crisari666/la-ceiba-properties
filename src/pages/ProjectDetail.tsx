@@ -93,7 +93,6 @@ const ProjectDetail = () => {
 
   // Set initial tab to first available
   const availableTabs: MediaTab[] = [];
-  if (hasVideo) availableTabs.push("video");
   if (hasImages) availableTabs.push("images");
   if (hasPlane) availableTabs.push("planes");
   if (hasBrochure) availableTabs.push("brochure");
@@ -106,7 +105,7 @@ const ProjectDetail = () => {
   const prevImage = () => setActiveImage((i) => (i - 1 + allImages.length) % allImages.length);
 
   const tabConfig: { key: MediaTab; label: string; icon: React.ReactNode; available: boolean }[] = [
-    { key: "video", label: t.projectDetail.video, icon: <Play className="w-4 h-4" />, available: hasVideo },
+    
     { key: "images", label: t.projectDetail.images, icon: <ImageIcon className="w-4 h-4" />, available: hasImages },
     { key: "planes", label: t.projectDetail.planes, icon: <FileText className="w-4 h-4" />, available: hasPlane },
     { key: "brochure", label: "Brochure", icon: <BookOpen className="w-4 h-4" />, available: hasBrochure },
@@ -206,26 +205,6 @@ const ProjectDetail = () => {
 
           {/* Tab content */}
           <AnimatePresence mode="wait">
-            {currentTab === "video" && (
-              <motion.div
-                key="video"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
-                  <video
-                    src={`${IMAGE_BASE}${project.reelVideo}`}
-                    controls
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-contain bg-black"
-                    poster={horizontalImages[0] || images[0]}
-                  />
-                </div>
-              </motion.div>
-            )}
-
             {currentTab === "images" && (
               <motion.div
                 key="images"
