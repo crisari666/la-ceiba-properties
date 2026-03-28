@@ -273,7 +273,7 @@ const ProjectDetail = () => {
           </AnimatePresence>
 
           {/* Tab buttons at bottom */}
-          <div className="flex flex-wrap gap-2 md:gap-3 mt-6 justify-center">
+          <div className="flex flex-wrap gap-2 md:gap-3 mt-4 justify-center">
             {tabConfig
               .filter((tab) => tab.available)
               .map((tab) => (
@@ -293,6 +293,17 @@ const ProjectDetail = () => {
                   {tab.label}
                 </button>
               ))}
+          </div>
+
+          {/* Project title below tabs */}
+          <h1 className="text-2xl md:text-4xl font-display font-bold text-foreground mt-4 mb-1">
+            {project.title}
+          </h1>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <MapPin className="w-4 h-4" />
+            <span className="text-sm md:text-base">
+              {project.city}, {project.state} · {project.country}
+            </span>
           </div>
         </div>
       </section>
