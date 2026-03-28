@@ -280,6 +280,29 @@ const ProjectDetail = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Tab buttons at bottom */}
+          <div className="flex flex-wrap gap-2 md:gap-3 mt-6 justify-center">
+            {tabConfig
+              .filter((tab) => tab.available)
+              .map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    setActiveTab(tab.key);
+                    setActiveImage(0);
+                  }}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
+                    currentTab === tab.key
+                      ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
+                      : "bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+          </div>
         </div>
       </section>
 
