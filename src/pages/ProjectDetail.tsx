@@ -93,6 +93,7 @@ const ProjectDetail = () => {
 
   // Set initial tab to first available
   const availableTabs: MediaTab[] = [];
+  if (hasVideo) availableTabs.push("video");
   if (hasImages) availableTabs.push("images");
   if (hasPlane) availableTabs.push("planes");
   if (hasBrochure) availableTabs.push("brochure");
@@ -105,7 +106,7 @@ const ProjectDetail = () => {
   const prevImage = () => setActiveImage((i) => (i - 1 + allImages.length) % allImages.length);
 
   const tabConfig: { key: MediaTab; label: string; icon: React.ReactNode; available: boolean }[] = [
-    
+    { key: "video", label: "Video", icon: <Play className="w-4 h-4" />, available: hasVideo },
     { key: "images", label: t.projectDetail.images, icon: <ImageIcon className="w-4 h-4" />, available: hasImages },
     { key: "planes", label: t.projectDetail.planes, icon: <FileText className="w-4 h-4" />, available: hasPlane },
     { key: "brochure", label: "Brochure", icon: <BookOpen className="w-4 h-4" />, available: hasBrochure },
@@ -115,96 +116,54 @@ const ProjectDetail = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero - Main media with first horizontal image or video poster */}
-      <section className="pt-16 md:pt-20">
-        <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-ceiba-dark">
-          {hasVideo && project.reelVideo ? (
-            <video
-              src={`${IMAGE_BASE}${project.reelVideo}`}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-              poster={horizontalImages[0] || images[0]}
-            />
-          ) : (
-            <img
-              src={horizontalImages[0] || images[0]}
-              alt={project.title}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          )}
-
-          {/* Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 pointer-events-none" />
-
-          {/* Back button */}
-          <Link
-            to="/projects"
-            className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-white/15 backdrop-blur-md text-white text-sm font-medium px-4 py-2 rounded-full border border-white/20 hover:bg-white/25 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {t.projectDetail.backToProjects}
-          </Link>
-
-          {/* Hero overlay info */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-            <div className="container mx-auto flex items-end justify-between gap-4">
-              <div>
-                <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-1">
-                  {project.title}
-                </h1>
-                <div className="flex items-center gap-2 text-white/80">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-sm md:text-base">
-                    {project.city}, {project.state} · {project.country}
-                  </span>
-                </div>
-              </div>
-              <div className="hidden md:block text-right">
-                <span className="text-xs text-white/60 uppercase tracking-wider">{t.projects.from}</span>
-                <div className="text-2xl lg:text-3xl font-display font-bold text-ceiba-warm">
-                  {formatPrice(project.priceSell)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Explore the project — Media Tabs */}
-      <section className="py-8 md:py-12 bg-muted/30">
+      <section className="pt-20 md:pt-24 pb-8 md:pb-12 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-xl md:text-2xl font-display font-bold text-foreground mb-6">
-            {t.projectDetail.exploreProject}
-          </h2>
-
-          {/* Tab buttons */}
-          <div className="flex flex-wrap gap-2 md:gap-3 mb-6">
-            {tabConfig
-              .filter((tab) => tab.available)
-              .map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() => {
-                    setActiveTab(tab.key);
-                    setActiveImage(0);
-                  }}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
-                    currentTab === tab.key
-                      ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
-                      : "bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
-                  }`}
-                >
-                  {tab.icon}
-                  {tab.label}
-                </button>
-              ))}
+          {/* Header with back button and title */}
+          <div className="flex items-center gap-4 mb-6">
+            <Link
+              to="/projects"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              {t.projectDetail.backToProjects}
+            </Link>
+          </div>
+          <h1 className="text-2xl md:text-4xl font-display font-bold text-foreground mb-1">
+            {project.title}
+          </h1>
+          <div className="flex items-center gap-2 text-muted-foreground mb-6">
+            <MapPin className="w-4 h-4" />
+            <span className="text-sm md:text-base">
+              {project.city}, {project.state} · {project.country}
+            </span>
           </div>
 
           {/* Tab content */}
           <AnimatePresence mode="wait">
+            {currentTab === "video" && hasVideo && (
+              <motion.div
+                key="video"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
+                  <video
+                    src={`${IMAGE_BASE}${project.reelVideo}`}
+                    controls
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                    poster={horizontalImages[0] || images[0]}
+                  />
+                </div>
+              </motion.div>
+            )}
+
             {currentTab === "images" && (
               <motion.div
                 key="images"
@@ -321,6 +280,29 @@ const ProjectDetail = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Tab buttons at bottom */}
+          <div className="flex flex-wrap gap-2 md:gap-3 mt-6 justify-center">
+            {tabConfig
+              .filter((tab) => tab.available)
+              .map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    setActiveTab(tab.key);
+                    setActiveImage(0);
+                  }}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
+                    currentTab === tab.key
+                      ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
+                      : "bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+          </div>
         </div>
       </section>
 
