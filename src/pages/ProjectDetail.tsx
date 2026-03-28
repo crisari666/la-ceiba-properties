@@ -106,7 +106,7 @@ const ProjectDetail = () => {
   const prevImage = () => setActiveImage((i) => (i - 1 + allImages.length) % allImages.length);
 
   const tabConfig: { key: MediaTab; label: string; icon: React.ReactNode; available: boolean }[] = [
-    
+    { key: "video", label: "Video", icon: <Play className="w-4 h-4" />, available: hasVideo },
     { key: "images", label: t.projectDetail.images, icon: <ImageIcon className="w-4 h-4" />, available: hasImages },
     { key: "planes", label: t.projectDetail.planes, icon: <FileText className="w-4 h-4" />, available: hasPlane },
     { key: "brochure", label: "Brochure", icon: <BookOpen className="w-4 h-4" />, available: hasBrochure },
