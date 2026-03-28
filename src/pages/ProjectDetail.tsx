@@ -93,7 +93,6 @@ const ProjectDetail = () => {
 
   // Set initial tab to first available
   const availableTabs: MediaTab[] = [];
-  if (hasVideo) availableTabs.push("video");
   if (hasImages) availableTabs.push("images");
   if (hasPlane) availableTabs.push("planes");
   if (hasBrochure) availableTabs.push("brochure");
