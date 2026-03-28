@@ -425,47 +425,17 @@ const ProjectDetail = () => {
                 </motion.div>
               )}
 
-              {/* Planes section below content */}
-              {hasPlane && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }}>
-                  <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-4">
-                    {t.projectDetail.planes}
-                  </h2>
-                  <div className="rounded-2xl overflow-hidden bg-white border border-border shadow-md">
-                    {isPlanePdf ? (
-                      <iframe
-                        src={`${IMAGE_BASE}${project.plane}`}
-                        className="w-full h-[500px] md:h-[700px]"
-                        title={`${project.title} - Plano`}
-                      />
-                    ) : (
-                      <img
-                        src={`${IMAGE_BASE}${project.plane}`}
-                        alt={`${project.title} - Plano`}
-                        className="w-full h-auto object-contain p-4"
-                      />
-                    )}
-                  </div>
-                  <div className="mt-3 flex justify-end">
-                    <a href={`${IMAGE_BASE}${project.plane}`} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="gap-2 border-ceiba-terra text-ceiba-terra hover:bg-ceiba-terra/5">
-                        <Download className="w-4 h-4" />
-                        Descargar plano
-                      </Button>
-                    </a>
-                  </div>
-                </motion.div>
-              )}
             </div>
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, duration: 0.5 }}
-                className="sticky top-24 bg-card rounded-2xl border border-border p-6 space-y-6 shadow-lg"
-              >
+              <div className="sticky top-24 space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.5 }}
+                  className="bg-card rounded-2xl border border-border p-6 space-y-6 shadow-lg"
+                >
                 <div className="flex items-start justify-between">
                   <div>
                     <span className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -509,7 +479,40 @@ const ProjectDetail = () => {
                     </a>
                   )}
                 </div>
-              </motion.div>
+                </motion.div>
+
+                {/* Planes section below sidebar card */}
+                {hasPlane && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }}>
+                    <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-4">
+                      {t.projectDetail.planes}
+                    </h2>
+                    <div className="rounded-2xl overflow-hidden bg-white border border-border shadow-md">
+                      {isPlanePdf ? (
+                        <iframe
+                          src={`${IMAGE_BASE}${project.plane}`}
+                          className="w-full h-[400px]"
+                          title={`${project.title} - Plano`}
+                        />
+                      ) : (
+                        <img
+                          src={`${IMAGE_BASE}${project.plane}`}
+                          alt={`${project.title} - Plano`}
+                          className="w-full h-auto object-contain p-4"
+                        />
+                      )}
+                    </div>
+                    <div className="mt-3 flex justify-end">
+                      <a href={`${IMAGE_BASE}${project.plane}`} target="_blank" rel="noopener noreferrer">
+                        <Button variant="outline" className="gap-2 border-ceiba-terra text-ceiba-terra hover:bg-ceiba-terra/5">
+                          <Download className="w-4 h-4" />
+                          Descargar plano
+                        </Button>
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
             </div>
           </div>
         </div>
