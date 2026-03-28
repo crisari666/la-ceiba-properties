@@ -119,8 +119,8 @@ const ProjectDetail = () => {
       {/* Explore the project — Media Tabs */}
       <section className="pt-20 md:pt-24 pb-8 md:pb-12 bg-muted/30">
         <div className="container mx-auto px-4">
-          {/* Header with back button and title */}
-          <div className="flex items-center gap-4 mb-6">
+          {/* Header with back button */}
+          <div className="flex items-center gap-4 mb-4">
             <Link
               to="/projects"
               className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -128,15 +128,6 @@ const ProjectDetail = () => {
               <ArrowLeft className="w-4 h-4" />
               {t.projectDetail.backToProjects}
             </Link>
-          </div>
-          <h1 className="text-2xl md:text-4xl font-display font-bold text-foreground mb-1">
-            {project.title}
-          </h1>
-          <div className="flex items-center gap-2 text-muted-foreground mb-6">
-            <MapPin className="w-4 h-4" />
-            <span className="text-sm md:text-base">
-              {project.city}, {project.state} · {project.country}
-            </span>
           </div>
 
           {/* Tab content */}
