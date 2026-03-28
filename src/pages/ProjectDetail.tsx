@@ -15,6 +15,10 @@ import {
   ChevronRight,
   Check,
   Share2,
+  Play,
+  Image as ImageIcon,
+  FileText,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import DOMPurify from "dompurify";
@@ -28,11 +32,14 @@ const formatPrice = (price: number) =>
     maximumFractionDigits: 0,
   }).format(price);
 
+type MediaTab = "video" | "images" | "planes" | "brochure";
+
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useLanguage();
   const { data: projects, isLoading } = useProjects();
   const [activeImage, setActiveImage] = useState(0);
+  const [activeTab, setActiveTab] = useState<MediaTab>("video");
 
   const project = projects?.find((p) => p._id === id);
 
@@ -73,37 +80,65 @@ const ProjectDetail = () => {
     ? project.images.map((img) => `${IMAGE_BASE}${img}`)
     : ["/placeholder.svg"];
 
-  const nextImage = () => setActiveImage((i) => (i + 1) % images.length);
-  const prevImage = () => setActiveImage((i) => (i - 1 + images.length) % images.length);
+  const horizontalImages = project.horizontalImages?.length
+    ? project.horizontalImages.map((img) => `${IMAGE_BASE}${img}`)
+    : [];
+
+  const allImages = [...horizontalImages, ...images];
+
+  const hasVideo = !!project.reelVideo;
+  const hasImages = allImages.length > 0;
+  const hasPlane = !!project.plane;
+  const hasBrochure = !!project.brochure;
+
+  // Set initial tab to first available
+  const availableTabs: MediaTab[] = [];
+  if (hasVideo) availableTabs.push("video");
+  if (hasImages) availableTabs.push("images");
+  if (hasPlane) availableTabs.push("planes");
+  if (hasBrochure) availableTabs.push("brochure");
+
+  const currentTab = availableTabs.includes(activeTab)
+    ? activeTab
+    : availableTabs[0] || "video";
+
+  const nextImage = () => setActiveImage((i) => (i + 1) % allImages.length);
+  const prevImage = () => setActiveImage((i) => (i - 1 + allImages.length) % allImages.length);
+
+  const tabConfig: { key: MediaTab; label: string; icon: React.ReactNode; available: boolean }[] = [
+    { key: "video", label: t.projectDetail.video, icon: <Play className="w-4 h-4" />, available: hasVideo },
+    { key: "images", label: t.projectDetail.images, icon: <ImageIcon className="w-4 h-4" />, available: hasImages },
+    { key: "planes", label: t.projectDetail.planes, icon: <FileText className="w-4 h-4" />, available: hasPlane },
+    { key: "brochure", label: "Brochure", icon: <BookOpen className="w-4 h-4" />, available: hasBrochure },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero - Video or First Image */}
+      {/* Hero - Main media with first horizontal image or video poster */}
       <section className="pt-16 md:pt-20">
         <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-ceiba-dark">
-          {project.reelVideo ? (
+          {hasVideo && project.reelVideo ? (
             <video
               src={`${IMAGE_BASE}${project.reelVideo}`}
-              controls
               autoPlay
               muted
               loop
               playsInline
               className="absolute inset-0 w-full h-full object-cover"
-              poster={images[0]}
+              poster={horizontalImages[0] || images[0]}
             />
           ) : (
             <img
-              src={images[0]}
+              src={horizontalImages[0] || images[0]}
               alt={project.title}
               className="absolute inset-0 w-full h-full object-cover"
             />
           )}
 
           {/* Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 pointer-events-none" />
 
           {/* Back button */}
           <Link
@@ -113,79 +148,202 @@ const ProjectDetail = () => {
             <ArrowLeft className="w-4 h-4" />
             {t.projectDetail.backToProjects}
           </Link>
-        </div>
-      </section>
 
-      {/* Image Carousel */}
-      {images.length > 1 && (
-        <section className="py-6 md:py-10 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-4">
-              {t.projectDetail.gallery || "Galería"}
-            </h2>
-            <div className="relative">
-              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden bg-ceiba-dark">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={activeImage}
-                    src={images[activeImage]}
-                    alt={`${project.title} - ${activeImage + 1}`}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </AnimatePresence>
-
-                {/* Navigation arrows */}
-                <button
-                  onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-
-                {/* Dots */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                  {images.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        i === activeImage ? "bg-white w-6" : "bg-white/40 hover:bg-white/60"
-                      }`}
-                    />
-                  ))}
+          {/* Hero overlay info */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+            <div className="container mx-auto flex items-end justify-between gap-4">
+              <div>
+                <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-1">
+                  {project.title}
+                </h1>
+                <div className="flex items-center gap-2 text-white/80">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-sm md:text-base">
+                    {project.city}, {project.state} · {project.country}
+                  </span>
                 </div>
               </div>
-
-              {/* Thumbnail strip */}
-              <div className="flex gap-2 md:gap-3 overflow-x-auto mt-3 pb-1 scrollbar-hide">
-                {images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className={`flex-shrink-0 w-16 h-16 md:w-24 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                      i === activeImage
-                        ? "border-ceiba-warm shadow-lg scale-105"
-                        : "border-transparent opacity-60 hover:opacity-100"
-                    }`}
-                  >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
+              <div className="hidden md:block text-right">
+                <span className="text-xs text-white/60 uppercase tracking-wider">{t.projects.from}</span>
+                <div className="text-2xl lg:text-3xl font-display font-bold text-ceiba-warm">
+                  {formatPrice(project.priceSell)}
+                </div>
               </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      {/* Explore the project — Media Tabs */}
+      <section className="py-8 md:py-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <h2 className="text-xl md:text-2xl font-display font-bold text-foreground mb-6">
+            {t.projectDetail.exploreProject}
+          </h2>
+
+          {/* Tab buttons */}
+          <div className="flex flex-wrap gap-2 md:gap-3 mb-6">
+            {tabConfig
+              .filter((tab) => tab.available)
+              .map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    setActiveTab(tab.key);
+                    setActiveImage(0);
+                  }}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
+                    currentTab === tab.key
+                      ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
+                      : "bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+          </div>
+
+          {/* Tab content */}
+          <AnimatePresence mode="wait">
+            {currentTab === "video" && (
+              <motion.div
+                key="video"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
+                  <video
+                    src={`${IMAGE_BASE}${project.reelVideo}`}
+                    controls
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-contain bg-black"
+                    poster={horizontalImages[0] || images[0]}
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            {currentTab === "images" && (
+              <motion.div
+                key="images"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Main image viewer */}
+                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeImage}
+                      src={allImages[activeImage]}
+                      alt={`${project.title} - ${activeImage + 1}`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={{ opacity: 0, scale: 1.03 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                    />
+                  </AnimatePresence>
+
+                  {allImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+
+                      {/* Counter badge */}
+                      <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                        {activeImage + 1} / {allImages.length}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Thumbnail strip */}
+                {allImages.length > 1 && (
+                  <div className="flex gap-2 md:gap-3 overflow-x-auto mt-4 pb-1 scrollbar-hide">
+                    {allImages.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveImage(i)}
+                        className={`flex-shrink-0 w-20 h-14 md:w-28 md:h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+                          i === activeImage
+                            ? "border-ceiba-terra shadow-lg scale-105"
+                            : "border-transparent opacity-60 hover:opacity-100"
+                        }`}
+                      >
+                        <img src={img} alt="" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {currentTab === "planes" && (
+              <motion.div
+                key="planes"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white shadow-xl">
+                  <img
+                    src={`${IMAGE_BASE}${project.plane}`}
+                    alt={`${project.title} - Plano`}
+                    className="absolute inset-0 w-full h-full object-contain p-4"
+                  />
+                </div>
+                <div className="mt-4 flex justify-end">
+                  <a href={`${IMAGE_BASE}${project.plane}`} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="gap-2 border-ceiba-terra text-ceiba-terra hover:bg-ceiba-terra/5">
+                      <Download className="w-4 h-4" />
+                      {t.projectDetail.viewPlans}
+                    </Button>
+                  </a>
+                </div>
+              </motion.div>
+            )}
+
+            {currentTab === "brochure" && (
+              <motion.div
+                key="brochure"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center justify-center py-16 rounded-2xl bg-card border border-border shadow-xl"
+              >
+                <BookOpen className="w-16 h-16 text-ceiba-terra mb-4" />
+                <p className="text-lg font-display font-semibold text-foreground mb-2">Brochure</p>
+                <p className="text-sm text-muted-foreground mb-6 text-center max-w-md">
+                  {t.projectDetail.downloadBrochure}
+                </p>
+                <a href={`${IMAGE_BASE}${project.brochure}`} target="_blank" rel="noopener noreferrer">
+                  <Button className="gap-2 bg-ceiba-terra hover:bg-ceiba-terra/90 text-white">
+                    <Download className="w-4 h-4" />
+                    {t.projectDetail.downloadBrochure}
+                  </Button>
+                </a>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
 
       {/* Content */}
       <section className="py-8 md:py-16">
@@ -193,32 +351,6 @@ const ProjectDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
             {/* Main info */}
             <div className="lg:col-span-2 space-y-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="flex items-start justify-between gap-4 flex-wrap">
-                  <div>
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-3">
-                      {project.title}
-                    </h1>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <MapPin className="w-4 h-4 text-ceiba-terra" />
-                      <span className="text-sm md:text-base">
-                        {project.city}, {project.state} · {project.country}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => navigator.share?.({ title: project.title, url: window.location.href })}
-                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
-                  >
-                    <Share2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </motion.div>
-
               {/* Description */}
               {project.description && (
                 <motion.div
@@ -271,13 +403,21 @@ const ProjectDetail = () => {
                 transition={{ delay: 0.15, duration: 0.5 }}
                 className="sticky top-24 bg-card rounded-2xl border border-border p-6 space-y-6 shadow-lg"
               >
-                <div>
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                    {t.projects.from}
-                  </span>
-                  <div className="text-3xl md:text-4xl font-display font-bold text-ceiba-terra mt-1">
-                    {formatPrice(project.priceSell)}
+                <div className="flex items-start justify-between">
+                  <div>
+                    <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                      {t.projects.from}
+                    </span>
+                    <div className="text-3xl md:text-4xl font-display font-bold text-ceiba-terra mt-1">
+                      {formatPrice(project.priceSell)}
+                    </div>
                   </div>
+                  <button
+                    onClick={() => navigator.share?.({ title: project.title, url: window.location.href })}
+                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </button>
                 </div>
 
                 {project.commissionPercentage > 0 && (
@@ -302,34 +442,6 @@ const ProjectDetail = () => {
                       <Button className="w-full gap-2 bg-ceiba-terra hover:bg-ceiba-terra/90 text-white">
                         <MapPin className="w-4 h-4" />
                         {t.projectDetail.viewLocation}
-                      </Button>
-                    </a>
-                  )}
-
-                  {project.brochure && (
-                    <a
-                      href={`${IMAGE_BASE}${project.brochure}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full"
-                    >
-                      <Button variant="outline" className="w-full gap-2 border-ceiba-terra text-ceiba-terra hover:bg-ceiba-terra/5">
-                        <Download className="w-4 h-4" />
-                        {t.projectDetail.downloadBrochure}
-                      </Button>
-                    </a>
-                  )}
-
-                  {project.plane && (
-                    <a
-                      href={`${IMAGE_BASE}${project.plane}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full"
-                    >
-                      <Button variant="outline" className="w-full gap-2 border-border text-foreground hover:bg-muted">
-                        <ExternalLink className="w-4 h-4" />
-                        {t.projectDetail.viewPlans}
                       </Button>
                     </a>
                   )}

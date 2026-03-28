@@ -57,6 +57,10 @@ export const translations = {
       videoTour: "Video del proyecto",
       gallery: "Galería",
       notFound: "Proyecto no encontrado",
+      images: "Imágenes",
+      planes: "Planos",
+      video: "Video",
+      exploreProject: "Explora el proyecto",
     },
     assistant: {
       title: "Conoce a Verónica",
@@ -131,6 +135,10 @@ export const translations = {
       videoTour: "Project video",
       gallery: "Gallery",
       notFound: "Project not found",
+      images: "Images",
+      planes: "Plans",
+      video: "Video",
+      exploreProject: "Explore the project",
     },
     assistant: {
       title: "Meet Verónica",

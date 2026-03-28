@@ -22,9 +22,12 @@ export interface Project {
   commissionValue: number;
   amenities: ProjectAmenity[];
   images: string[];
+  horizontalImages: string[];
+  verticalVideos: string[];
   reelVideo: string;
   plane: string;
   brochure: string;
+  cardProject: string;
   createdAt: string;
   updatedAt: string;
 }
