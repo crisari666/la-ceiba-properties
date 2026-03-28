@@ -1,15 +1,16 @@
 import { useParams, Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useProjects } from "@/hooks/useProjects";
+import type { LotOption } from "@/hooks/useProjects";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Slider } from "@/components/ui/slider";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
   ArrowLeft,
-  ExternalLink,
   Download,
   ChevronLeft,
   ChevronRight,
@@ -19,8 +20,11 @@ import {
   Image as ImageIcon,
   FileText,
   BookOpen,
+  Ruler,
+  Calculator,
+  Info,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import DOMPurify from "dompurify";
 
 const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
@@ -35,13 +39,29 @@ const formatPrice = (price: number) =>
 type MediaTab = "video" | "images" | "planes" | "brochure";
 
 const ProjectDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const { t } = useLanguage();
   const { data: projects, isLoading } = useProjects();
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState<MediaTab>("video");
+  const [selectedLot, setSelectedLot] = useState<number>(0);
+  const [cuotas, setCuotas] = useState<number>(12);
 
-  const project = projects?.find((p) => p._id === id);
+  const project = projects?.find((p) => p.slug === slug || p._id === slug);
+
+  // Lot & payment calculations
+  const lotOptions = project?.lotOptions ?? [];
+  const currentLot: LotOption | undefined = lotOptions[selectedLot];
+  const separation = project?.separation ?? 0;
+
+  const paymentCalc = useMemo(() => {
+    if (!currentLot) return null;
+    const totalPrice = currentLot.price;
+    const remaining = totalPrice - separation;
+    const monthlyPayment = remaining / cuotas;
+    const lastPayment = remaining - monthlyPayment * (cuotas - 1);
+    return { totalPrice, separation, remaining, monthlyPayment, lastPayment, cuotas };
+  }, [currentLot, separation, cuotas]);
 
   if (isLoading) {
     return (
@@ -90,8 +110,8 @@ const ProjectDetail = () => {
   const hasImages = allImages.length > 0;
   const hasPlane = !!project.plane;
   const hasBrochure = !!project.brochure;
+  const isPlanePdf = hasPlane && project.plane.toLowerCase().endsWith(".pdf");
 
-  // Set initial tab to first available
   const availableTabs: MediaTab[] = [];
   if (hasVideo) availableTabs.push("video");
   if (hasImages) availableTabs.push("images");
@@ -116,10 +136,10 @@ const ProjectDetail = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Explore the project — Media Tabs */}
+      {/* Media Gallery Section */}
       <section className="pt-20 md:pt-24 pb-8 md:pb-12 bg-muted/30">
         <div className="container mx-auto px-4">
-          {/* Header with back button */}
+          {/* Back button */}
           <div className="flex items-center gap-4 mb-4">
             <Link
               to="/projects"
@@ -133,21 +153,11 @@ const ProjectDetail = () => {
           {/* Tab content */}
           <AnimatePresence mode="wait">
             {currentTab === "video" && hasVideo && (
-              <motion.div
-                key="video"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
+              <motion.div key="video" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
                 <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
                   <video
                     src={`${IMAGE_BASE}${project.reelVideo}`}
-                    controls
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
+                    controls autoPlay muted loop playsInline
                     className="absolute inset-0 w-full h-full object-cover"
                     poster={horizontalImages[0] || images[0]}
                   />
@@ -156,14 +166,7 @@ const ProjectDetail = () => {
             )}
 
             {currentTab === "images" && (
-              <motion.div
-                key="images"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Main image viewer */}
+              <motion.div key="images" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
                 <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
                   <AnimatePresence mode="wait">
                     <motion.img
@@ -177,31 +180,20 @@ const ProjectDetail = () => {
                       transition={{ duration: 0.4 }}
                     />
                   </AnimatePresence>
-
                   {allImages.length > 1 && (
                     <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
-                      >
+                      <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20">
                         <ChevronLeft className="w-5 h-5" />
                       </button>
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20"
-                      >
+                      <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors border border-white/20">
                         <ChevronRight className="w-5 h-5" />
                       </button>
-
-                      {/* Counter badge */}
                       <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
                         {activeImage + 1} / {allImages.length}
                       </div>
                     </>
                   )}
                 </div>
-
-                {/* Thumbnail strip */}
                 {allImages.length > 1 && (
                   <div className="flex gap-2 md:gap-3 overflow-x-auto mt-4 pb-1 scrollbar-hide">
                     {allImages.map((img, i) => (
@@ -209,9 +201,7 @@ const ProjectDetail = () => {
                         key={i}
                         onClick={() => setActiveImage(i)}
                         className={`flex-shrink-0 w-20 h-14 md:w-28 md:h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
-                          i === activeImage
-                            ? "border-ceiba-terra shadow-lg scale-105"
-                            : "border-transparent opacity-60 hover:opacity-100"
+                          i === activeImage ? "border-ceiba-terra shadow-lg scale-105" : "border-transparent opacity-60 hover:opacity-100"
                         }`}
                       >
                         <img src={img} alt="" className="w-full h-full object-cover" />
@@ -223,20 +213,24 @@ const ProjectDetail = () => {
             )}
 
             {currentTab === "planes" && (
-              <motion.div
-                key="planes"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white shadow-xl">
-                  <img
-                    src={`${IMAGE_BASE}${project.plane}`}
-                    alt={`${project.title} - Plano`}
-                    className="absolute inset-0 w-full h-full object-contain p-4"
-                  />
-                </div>
+              <motion.div key="planes" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+                {isPlanePdf ? (
+                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white shadow-xl">
+                    <iframe
+                      src={`${IMAGE_BASE}${project.plane}`}
+                      className="absolute inset-0 w-full h-full"
+                      title={`${project.title} - Plano`}
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white shadow-xl">
+                    <img
+                      src={`${IMAGE_BASE}${project.plane}`}
+                      alt={`${project.title} - Plano`}
+                      className="absolute inset-0 w-full h-full object-contain p-4"
+                    />
+                  </div>
+                )}
                 <div className="mt-4 flex justify-end">
                   <a href={`${IMAGE_BASE}${project.plane}`} target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" className="gap-2 border-ceiba-terra text-ceiba-terra hover:bg-ceiba-terra/5">
@@ -251,17 +245,13 @@ const ProjectDetail = () => {
             {currentTab === "brochure" && (
               <motion.div
                 key="brochure"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className="flex flex-col items-center justify-center py-16 rounded-2xl bg-card border border-border shadow-xl"
               >
                 <BookOpen className="w-16 h-16 text-ceiba-terra mb-4" />
                 <p className="text-lg font-display font-semibold text-foreground mb-2">Brochure</p>
-                <p className="text-sm text-muted-foreground mb-6 text-center max-w-md">
-                  {t.projectDetail.downloadBrochure}
-                </p>
+                <p className="text-sm text-muted-foreground mb-6 text-center max-w-md">{t.projectDetail.downloadBrochure}</p>
                 <a href={`${IMAGE_BASE}${project.brochure}`} target="_blank" rel="noopener noreferrer">
                   <Button className="gap-2 bg-ceiba-terra hover:bg-ceiba-terra/90 text-white">
                     <Download className="w-4 h-4" />
@@ -272,17 +262,14 @@ const ProjectDetail = () => {
             )}
           </AnimatePresence>
 
-          {/* Tab buttons at bottom */}
+          {/* Tab buttons */}
           <div className="flex flex-wrap gap-2 md:gap-3 mt-4 justify-center">
             {tabConfig
               .filter((tab) => tab.available)
               .map((tab) => (
                 <button
                   key={tab.key}
-                  onClick={() => {
-                    setActiveTab(tab.key);
-                    setActiveImage(0);
-                  }}
+                  onClick={() => { setActiveTab(tab.key); setActiveImage(0); }}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
                     currentTab === tab.key
                       ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
@@ -295,15 +282,13 @@ const ProjectDetail = () => {
               ))}
           </div>
 
-          {/* Project title below tabs */}
+          {/* Project title */}
           <h1 className="text-2xl md:text-4xl font-display font-bold text-foreground mt-4 mb-1">
             {project.title}
           </h1>
           <div className="flex items-center gap-2 text-muted-foreground">
             <MapPin className="w-4 h-4" />
-            <span className="text-sm md:text-base">
-              {project.city}, {project.state} · {project.country}
-            </span>
+            <span className="text-sm md:text-base">{project.city}, {project.state} · {project.country}</span>
           </div>
         </div>
       </section>
@@ -316,11 +301,7 @@ const ProjectDetail = () => {
             <div className="lg:col-span-2 space-y-8">
               {/* Description */}
               {project.description && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.5 }}
-                >
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.5 }}>
                   <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-3">
                     {t.projectDetail.aboutProject}
                   </h2>
@@ -331,22 +312,109 @@ const ProjectDetail = () => {
                 </motion.div>
               )}
 
+              {/* Lot Options & Payment Calculator */}
+              {lotOptions.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.5 }}>
+                  <div className="rounded-2xl bg-ceiba-dark text-white overflow-hidden">
+                    {/* Lot selector */}
+                    <div className="p-6 pb-4">
+                      <h2 className="text-lg md:text-xl font-display font-semibold mb-1">
+                        Tipos de lotes
+                      </h2>
+                      <p className="text-sm text-white/60 mb-5">
+                        Los precios mostrados son "desde" y pueden variar según la disponibilidad y la etapa del desarrollo.
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        {lotOptions.map((lot, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setSelectedLot(i)}
+                            className={`px-5 py-3 rounded-xl border transition-all duration-300 text-left ${
+                              selectedLot === i
+                                ? "bg-ceiba-terra border-ceiba-terra text-white"
+                                : "bg-white/5 border-white/15 text-white/80 hover:border-white/30"
+                            }`}
+                          >
+                            <div className="text-lg font-bold">{lot.area}m²</div>
+                            <div className="text-xs opacity-70">{formatPrice(lot.price)}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Payment calculator */}
+                    {paymentCalc && (
+                      <div className="p-6 border-t border-white/10">
+                        <h3 className="text-lg font-display font-semibold mb-1">
+                          Pagos flexibles, sueños posibles
+                        </h3>
+
+                        <div className="space-y-0 mt-4">
+                          {/* Separación */}
+                          <div className="flex items-center justify-between py-4 border-b border-white/10">
+                            <span className="text-sm font-medium">Separación</span>
+                            <span className="text-xl font-bold">{formatPrice(paymentCalc.separation)} <span className="text-xs font-normal text-white/60">COP</span></span>
+                          </div>
+
+                          {/* Cuotas slider */}
+                          <div className="py-4 border-b border-white/10">
+                            <div className="flex items-center justify-between mb-3">
+                              <span className="text-sm font-medium">{cuotas} mensualidades</span>
+                              <span className="text-xl font-bold">{formatPrice(paymentCalc.monthlyPayment)} <span className="text-xs font-normal text-white/60">COP</span></span>
+                            </div>
+                            <Slider
+                              value={[cuotas]}
+                              onValueChange={(v) => setCuotas(v[0])}
+                              min={1}
+                              max={36}
+                              step={1}
+                              className="w-full [&_[data-slot=slider-track]]:bg-white/20 [&_[data-slot=slider-range]]:bg-ceiba-terra [&_[data-slot=slider-thumb]]:bg-ceiba-terra [&_[data-slot=slider-thumb]]:border-ceiba-terra"
+                            />
+                            <div className="flex justify-between text-xs text-white/40 mt-1">
+                              <span>1 mes</span>
+                              <span>36 meses</span>
+                            </div>
+                          </div>
+
+                          {/* Precio total */}
+                          <div className="flex items-center justify-between py-4">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-sm font-medium">Precio total</span>
+                              <Info className="w-3.5 h-3.5 text-white/40" />
+                            </div>
+                            <span className="text-xl font-bold">{formatPrice(paymentCalc.totalPrice)} <span className="text-xs font-normal text-white/60">COP</span></span>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-white/50 mt-4">
+                          Cierra el mejor trato directamente con el constructor
+                        </p>
+                        <a
+                          href={`https://wa.me/573001234567?text=Hola, me interesa el proyecto ${project.title} - Lote de ${currentLot?.area}m²`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block mt-3"
+                        >
+                          <Button className="w-full bg-transparent border border-white/30 text-white hover:bg-white/10 py-3 text-sm">
+                            <Calculator className="w-4 h-4 mr-2" />
+                            Ajustar plan de pagos
+                          </Button>
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
               {/* Amenities */}
               {project.amenities?.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                >
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
                   <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-4">
                     {t.projects.amenities}
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {project.amenities.map((a) => (
-                      <div
-                        key={a._id}
-                        className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 border border-border"
-                      >
+                      <div key={a._id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 border border-border">
                         <div className="w-8 h-8 rounded-lg bg-ceiba-warm/20 flex items-center justify-center flex-shrink-0">
                           <Check className="w-4 h-4 text-ceiba-terra" />
                         </div>
@@ -356,9 +424,41 @@ const ProjectDetail = () => {
                   </div>
                 </motion.div>
               )}
+
+              {/* Planes section below content */}
+              {hasPlane && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }}>
+                  <h2 className="text-lg md:text-xl font-display font-semibold text-foreground mb-4">
+                    {t.projectDetail.planes}
+                  </h2>
+                  <div className="rounded-2xl overflow-hidden bg-white border border-border shadow-md">
+                    {isPlanePdf ? (
+                      <iframe
+                        src={`${IMAGE_BASE}${project.plane}`}
+                        className="w-full h-[500px] md:h-[700px]"
+                        title={`${project.title} - Plano`}
+                      />
+                    ) : (
+                      <img
+                        src={`${IMAGE_BASE}${project.plane}`}
+                        alt={`${project.title} - Plano`}
+                        className="w-full h-auto object-contain p-4"
+                      />
+                    )}
+                  </div>
+                  <div className="mt-3 flex justify-end">
+                    <a href={`${IMAGE_BASE}${project.plane}`} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className="gap-2 border-ceiba-terra text-ceiba-terra hover:bg-ceiba-terra/5">
+                        <Download className="w-4 h-4" />
+                        Descargar plano
+                      </Button>
+                    </a>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
-            {/* Sidebar - Pricing & Actions */}
+            {/* Sidebar */}
             <div className="lg:col-span-1">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

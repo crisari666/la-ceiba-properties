@@ -31,7 +31,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       transition={{ delay: index * 0.12, duration: 0.6, ease: "easeOut" }}
     >
       <Link
-        to={`/projects/${project._id}`}
+        to={`/projects/${project.slug || project._id}`}
         className="group block relative rounded-2xl overflow-hidden bg-ceiba-dark aspect-[3/4] sm:aspect-[4/5] cursor-pointer"
       >
         {/* Background Image */}

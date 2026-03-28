@@ -5,6 +5,11 @@ export interface ProjectAmenity {
   title: string;
 }
 
+export interface LotOption {
+  area: number;
+  price: number;
+}
+
 export interface Project {
   _id: string;
   title: string;
@@ -30,6 +35,9 @@ export interface Project {
   cardProject: string;
   createdAt: string;
   updatedAt: string;
+  lotOptions?: LotOption[];
+  separation?: number;
+  slug?: string;
 }
 
 const fetchProjects = async (): Promise<Project[]> => {
