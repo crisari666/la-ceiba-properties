@@ -17,9 +17,11 @@ const formatPrice = (price: number) => {
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const { t } = useLanguage();
 
-  const mainImage = project.images?.[0]
-    ? `${IMAGE_BASE}${project.images[0]}`
-    : "/placeholder.svg";
+  const mainImage = project.cardProject
+    ? `${IMAGE_BASE}${project.cardProject}`
+    : project.images?.[0]
+      ? `${IMAGE_BASE}${project.images[0]}`
+      : "/placeholder.svg";
 
   return (
     <motion.div

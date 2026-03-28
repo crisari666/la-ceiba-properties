@@ -135,6 +135,10 @@ export const translations = {
       videoTour: "Project video",
       gallery: "Gallery",
       notFound: "Project not found",
+      images: "Images",
+      planes: "Plans",
+      video: "Video",
+      exploreProject: "Explore the project",
     },
     assistant: {
       title: "Meet Verónica",
