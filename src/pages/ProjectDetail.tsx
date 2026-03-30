@@ -74,7 +74,7 @@ const ProjectDetail = () => {
                 projectTitle={project.title}
                 onLotChange={setSelectedLot}
               />
-              <ProjectAmenities amenities={project.amenities} />
+              <ProjectAmenities amenities={project.amenities} amenitiesGroups={project.amenitiesGroups} />
             </div>
 
             {/* Column 2: Referral Card, Plane */}

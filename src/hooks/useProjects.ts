@@ -5,6 +5,12 @@ export interface ProjectAmenity {
   title: string;
 }
 
+export interface AmenityGroup {
+  icon: string;
+  title: string;
+  amenities: string[];
+}
+
 export interface LotOption {
   area: number;
   price: number;
@@ -26,6 +32,7 @@ export interface Project {
   commissionPercentage: number;
   commissionValue: number;
   amenities: ProjectAmenity[];
+  amenitiesGroups?: AmenityGroup[];
   images: string[];
   horizontalImages: string[];
   verticalVideos: string[];
