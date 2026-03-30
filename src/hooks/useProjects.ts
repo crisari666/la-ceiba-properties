@@ -32,6 +32,7 @@ export interface Project {
   commissionPercentage: number;
   commissionValue: number;
   amenities: ProjectAmenity[];
+  amenitiesGroups?: AmenityGroup[];
   images: string[];
   horizontalImages: string[];
   verticalVideos: string[];
