@@ -83,6 +83,23 @@ const ProjectDetail = () => {
         </div>
       </section>
 
+      {/* Google Maps */}
+      {project.lat && project.lng && (
+        <section className="w-full">
+          <iframe
+            title={`${project.title} - Ubicación`}
+            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${project.lat},${project.lng}&zoom=15`}
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full"
+          />
+        </section>
+      )}
+
       <Footer />
     </div>
   );
