@@ -113,7 +113,7 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
               Cierra el mejor trato directamente con el constructor
             </p>
             <a
-              href={`https://wa.me/573001234567?text=Hola, me interesa el proyecto ${projectTitle} - Lote de ${currentLot?.area}m²`}
+              href={`https://wa.me/573213144672?text=Hola, me interesa el proyecto ${projectTitle} - Lote de ${currentLot?.area}m². Quisiera ajustar mi plan de pagos.`}
               target="_blank"
               rel="noopener noreferrer"
               className="block mt-3"
