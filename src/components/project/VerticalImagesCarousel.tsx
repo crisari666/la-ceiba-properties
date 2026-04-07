@@ -64,12 +64,12 @@ const VerticalImagesCarousel = ({ images, title }: Props) => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-lg"
+                  className="w-full rounded-2xl overflow-hidden shadow-lg"
                 >
                   <img
                     src={img}
                     alt={`${title} - ${startIndex + i + 1}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto object-contain"
                     loading="lazy"
                   />
                 </motion.div>
