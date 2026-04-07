@@ -86,7 +86,7 @@ const ProjectMediaGallery = ({ project }: Props) => {
                   src={`${IMAGE_BASE}${project.reelVideo}`}
                   controls autoPlay muted loop playsInline
                   className="absolute inset-0 w-full h-full object-cover"
-                  poster={horizontalImages[0] || images[0]}
+                  poster={allImages[0]}
                 />
               </div>
             </motion.div>
