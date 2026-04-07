@@ -29,15 +29,15 @@ const ProjectMediaGallery = ({ project }: Props) => {
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState<MediaTab>("video");
 
-  const images = project.images?.length
-    ? project.images.map((img) => `${IMAGE_BASE}${img}`)
-    : ["/placeholder.svg"];
-
   const horizontalImages = project.horizontalImages?.length
     ? project.horizontalImages.map((img) => `${IMAGE_BASE}${img}`)
     : [];
 
-  const allImages = [...horizontalImages, ...images];
+  const fallbackImages = project.images?.length
+    ? project.images.map((img) => `${IMAGE_BASE}${img}`)
+    : ["/placeholder.svg"];
+
+  const allImages = horizontalImages.length > 0 ? horizontalImages : fallbackImages;
 
   const hasVideo = !!project.reelVideo;
   const hasImages = allImages.length > 0;
@@ -86,7 +86,7 @@ const ProjectMediaGallery = ({ project }: Props) => {
                   src={`${IMAGE_BASE}${project.reelVideo}`}
                   controls autoPlay muted loop playsInline
                   className="absolute inset-0 w-full h-full object-cover"
-                  poster={horizontalImages[0] || images[0]}
+                  poster={allImages[0]}
                 />
               </div>
             </motion.div>

@@ -14,6 +14,7 @@ import ProjectDescription from "@/components/project/ProjectDescription";
 import LotCalculator from "@/components/project/LotCalculator";
 import ProjectAmenities from "@/components/project/ProjectAmenities";
 import ProjectSidebar from "@/components/project/ProjectSidebar";
+import VerticalImagesCarousel from "@/components/project/VerticalImagesCarousel";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -82,6 +83,11 @@ const ProjectDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Vertical Images Carousel */}
+      {project.images?.length > 0 && (
+        <VerticalImagesCarousel images={project.images} title={project.title} />
+      )}
 
       {/* Google Maps */}
       {project.lat && project.lng && (
