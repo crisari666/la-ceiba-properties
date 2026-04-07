@@ -161,39 +161,37 @@ const ProjectMediaGallery = ({ project }: Props) => {
             </motion.div>
           )}
 
-          {currentTab === "brochure" && (
-            <motion.div key="brochure" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center py-16 rounded-2xl bg-card border border-border shadow-xl"
-            >
-              <BookOpen className="w-16 h-16 text-ceiba-terra mb-4" />
-              <p className="text-lg font-display font-semibold text-foreground mb-2">Brochure</p>
-              <p className="text-sm text-muted-foreground mb-6 text-center max-w-md">{t.projectDetail.downloadBrochure}</p>
-              <a href={`${IMAGE_BASE}${project.brochure}`} target="_blank" rel="noopener noreferrer">
-                <Button className="gap-2 bg-ceiba-terra hover:bg-ceiba-terra/90 text-white">
-                  <Download className="w-4 h-4" />
-                  {t.projectDetail.downloadBrochure}
-                </Button>
-              </a>
-            </motion.div>
-          )}
         </AnimatePresence>
 
         <div className="flex flex-wrap gap-2 md:gap-3 mt-4 justify-center">
           {tabConfig
             .filter((tab) => tab.available)
             .map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => { setActiveTab(tab.key); setActiveImage(0); }}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
-                  currentTab === tab.key
-                    ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
-                    : "bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
-                }`}
-              >
-                {tab.icon}
-                {tab.label}
-              </button>
+              tab.key === "brochure" ? (
+                <a
+                  key={tab.key}
+                  href={`${IMAGE_BASE}${project.brochure}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
+                >
+                  {tab.icon}
+                  {tab.label}
+                </a>
+              ) : (
+                <button
+                  key={tab.key}
+                  onClick={() => { setActiveTab(tab.key); setActiveImage(0); }}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300 ${
+                    currentTab === tab.key
+                      ? "bg-ceiba-terra text-white border-ceiba-terra shadow-md"
+                      : "bg-card text-muted-foreground border-border hover:border-ceiba-terra/50 hover:text-foreground"
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              )
             ))}
         </div>
 
