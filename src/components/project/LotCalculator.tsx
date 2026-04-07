@@ -100,6 +100,11 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
                 </div>
               </div>
 
+              <div className="flex items-center justify-between py-4 border-b border-white/10">
+                <span className="text-sm font-medium">Intereses</span>
+                <span className="text-xl font-bold text-green-400">$0 <span className="text-xs font-normal text-green-400/60">COP</span></span>
+              </div>
+
               <div className="flex items-center justify-between py-4">
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm font-medium">Precio total</span>
