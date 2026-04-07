@@ -29,15 +29,15 @@ const ProjectMediaGallery = ({ project }: Props) => {
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState<MediaTab>("video");
 
-  const images = project.images?.length
-    ? project.images.map((img) => `${IMAGE_BASE}${img}`)
-    : ["/placeholder.svg"];
-
   const horizontalImages = project.horizontalImages?.length
     ? project.horizontalImages.map((img) => `${IMAGE_BASE}${img}`)
     : [];
 
-  const allImages = [...horizontalImages, ...images];
+  const fallbackImages = project.images?.length
+    ? project.images.map((img) => `${IMAGE_BASE}${img}`)
+    : ["/placeholder.svg"];
+
+  const allImages = horizontalImages.length > 0 ? horizontalImages : fallbackImages;
 
   const hasVideo = !!project.reelVideo;
   const hasImages = allImages.length > 0;
