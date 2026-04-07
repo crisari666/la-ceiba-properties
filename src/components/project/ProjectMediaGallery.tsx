@@ -161,21 +161,6 @@ const ProjectMediaGallery = ({ project }: Props) => {
             </motion.div>
           )}
 
-          {currentTab === "brochure" && (
-            <motion.div key="brochure" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center py-16 rounded-2xl bg-card border border-border shadow-xl"
-            >
-              <BookOpen className="w-16 h-16 text-ceiba-terra mb-4" />
-              <p className="text-lg font-display font-semibold text-foreground mb-2">Brochure</p>
-              <p className="text-sm text-muted-foreground mb-6 text-center max-w-md">{t.projectDetail.downloadBrochure}</p>
-              <a href={`${IMAGE_BASE}${project.brochure}`} target="_blank" rel="noopener noreferrer">
-                <Button className="gap-2 bg-ceiba-terra hover:bg-ceiba-terra/90 text-white">
-                  <Download className="w-4 h-4" />
-                  {t.projectDetail.downloadBrochure}
-                </Button>
-              </a>
-            </motion.div>
-          )}
         </AnimatePresence>
 
         <div className="flex flex-wrap gap-2 md:gap-3 mt-4 justify-center">
