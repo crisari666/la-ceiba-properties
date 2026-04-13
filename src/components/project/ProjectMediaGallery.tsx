@@ -39,7 +39,8 @@ const ProjectMediaGallery = ({ project }: Props) => {
 
   const allImages = horizontalImages.length > 0 ? horizontalImages : fallbackImages;
 
-  const hasVideo = !!project.reelVideo;
+  const videoSrc = project.verticalVideos?.length ? project.verticalVideos[0] : project.reelVideo;
+  const hasVideo = !!videoSrc;
   const hasImages = allImages.length > 0;
   const hasPlane = !!project.plane;
   const hasBrochure = !!project.brochure;
