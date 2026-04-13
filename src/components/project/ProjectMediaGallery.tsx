@@ -84,7 +84,7 @@ const ProjectMediaGallery = ({ project }: Props) => {
             <motion.div key="video" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-ceiba-dark shadow-xl">
                 <video
-                  src={`${IMAGE_BASE}${project.reelVideo}`}
+                  src={`${IMAGE_BASE}${videoSrc}`}
                   controls autoPlay muted loop playsInline
                   className="absolute inset-0 w-full h-full object-cover"
                   poster={allImages[0]}
