@@ -84,11 +84,6 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* Vertical Images Carousel */}
-      {project.images?.length > 0 && (
-        <VerticalImagesCarousel images={project.images} title={project.title} />
-      )}
-
       {/* Google Maps */}
       {project.lat && project.lng && (
         <section className="w-full">
