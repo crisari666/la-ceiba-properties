@@ -8,6 +8,10 @@
     <meta name="author" content="La Ceiba" />
     <link rel="icon" type="image/png" href="/ceiba-icon.png" />
 
+    <!-- Preconnect to APIs and image CDN for faster first paint -->
+    <link rel="preconnect" href="https://back.laceiba.group" crossorigin />
+    <link rel="dns-prefetch" href="https://back.laceiba.group" />
+
     <meta property="og:title" content="La Ceiba | Holding Inmobiliario" />
     <meta property="og:description" content="Inversión en bienes raíces con alta valorización. Programa de referidos con 2% de comisión." />
     <meta property="og:type" content="website" />
@@ -19,20 +23,25 @@
     <meta name="twitter:image" content="https://laceiba.group/ceiba-icon.png" />
     <meta name="twitter:title" content="La Ceiba | Holding Inmobiliario" />
     <meta name="twitter:description" content="Inversión en bienes raíces con alta valorización. Programa de referidos con 2% de comisión." />
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-34RK6YG2XT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-34RK6YG2XT');
-    </script>
   </head>
 
   <body>
-    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Google tag (gtag.js) - loaded after main content for faster LCP -->
+    <script>
+      window.addEventListener('load', function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-34RK6YG2XT';
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'G-34RK6YG2XT');
+      });
+    </script>
   </body>
 </html>
