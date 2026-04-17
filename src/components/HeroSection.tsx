@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, TrendingUp, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import hero1 from "@/assets/hero-1.jpg";
-import hero2 from "@/assets/hero-2.jpg";
-import hero3 from "@/assets/hero-3.jpg";
-import hero4 from "@/assets/hero-4.jpg";
+import hero1 from "@/assets/hero-1.webp";
+import hero2 from "@/assets/hero-2.webp";
+import hero3 from "@/assets/hero-3.webp";
+import hero4 from "@/assets/hero-4.webp";
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -117,6 +117,7 @@ const HeroSection = () => {
                 className="w-full h-full object-cover"
                 width={896}
                 height={1152}
+                fetchPriority="high"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ceiba-dark/40 to-transparent" />
             </motion.div>

@@ -1,9 +1,7 @@
+import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
-import ReferralsSection from "@/components/ReferralsSection";
-import AssistantSection from "@/components/AssistantSection";
-import Footer from "@/components/Footer";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useProjects } from "@/hooks/useProjects";
 import ProjectCard from "@/components/ProjectCard";
@@ -11,6 +9,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
+// Lazy-load below-the-fold sections to reduce initial JS
+const ReferralsSection = lazy(() => import("@/components/ReferralsSection"));
+const AssistantSection = lazy(() => import("@/components/AssistantSection"));
+const Footer = lazy(() => import("@/components/Footer"));
 
 const FeaturedProjects = () => {
   const { t } = useLanguage();
@@ -58,9 +61,11 @@ const Index = () => {
       <HeroSection />
       <StatsSection />
       <FeaturedProjects />
-      <ReferralsSection />
-      <AssistantSection />
-      <Footer />
+      <Suspense fallback={null}>
+        <ReferralsSection />
+        <AssistantSection />
+        <Footer />
+      </Suspense>
     </div>
   );
 };
