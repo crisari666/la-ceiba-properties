@@ -134,6 +134,13 @@ export const translations = {
       location: "Location",
       seeAll: "See all projects",
     },
+    releases: {
+      title: "Releases",
+      subtitle: "Discover our upcoming projects and exclusive launches.",
+      viewMap: "View on map",
+      empty: "No releases available.",
+      error: "Error loading releases. Please try again later.",
+    },
     projectDetail: {
       backToProjects: "Back to projects",
       aboutProject: "About the project",
