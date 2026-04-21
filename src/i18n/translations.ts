@@ -84,6 +84,7 @@ export const translations = {
     nav: {
       home: "Home",
       projects: "Projects",
+      releases: "Releases",
       referrals: "Referrals",
       about: "About Us",
       contact: "Contact",
