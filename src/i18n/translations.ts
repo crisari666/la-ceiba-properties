@@ -5,6 +5,7 @@ export const translations = {
     nav: {
       home: "Inicio",
       projects: "Proyectos",
+      releases: "Lanzamientos",
       referrals: "Referidos",
       about: "Nosotros",
       contact: "Contacto",
@@ -47,6 +48,13 @@ export const translations = {
       location: "Ubicación",
       seeAll: "Ver todos los proyectos",
     },
+    releases: {
+      title: "Lanzamientos",
+      subtitle: "Conoce nuestros próximos proyectos y lanzamientos exclusivos.",
+      viewMap: "Ver en mapa",
+      empty: "No hay lanzamientos disponibles.",
+      error: "Error al cargar lanzamientos. Inténtalo más tarde.",
+    },
     projectDetail: {
       backToProjects: "Volver a proyectos",
       aboutProject: "Sobre el proyecto",
@@ -83,6 +91,7 @@ export const translations = {
     nav: {
       home: "Home",
       projects: "Projects",
+      releases: "Releases",
       referrals: "Referrals",
       about: "About Us",
       contact: "Contact",
@@ -124,6 +133,13 @@ export const translations = {
       amenities: "Amenities",
       location: "Location",
       seeAll: "See all projects",
+    },
+    releases: {
+      title: "Releases",
+      subtitle: "Discover our upcoming projects and exclusive launches.",
+      viewMap: "View on map",
+      empty: "No releases available.",
+      error: "Error loading releases. Please try again later.",
     },
     projectDetail: {
       backToProjects: "Back to projects",
