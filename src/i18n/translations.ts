@@ -5,7 +5,7 @@ export const translations = {
     nav: {
       home: "Inicio",
       projects: "Proyectos",
-      releases: "Lanzamientos",
+      releases: "Proyectos entregados",
       referrals: "Referidos",
       about: "Nosotros",
       contact: "Contacto",
@@ -91,7 +91,7 @@ export const translations = {
     nav: {
       home: "Home",
       projects: "Projects",
-      releases: "Releases",
+      releases: "Delivered Projects",
       referrals: "Referrals",
       about: "About Us",
       contact: "Contact",
