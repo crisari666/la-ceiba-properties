@@ -48,6 +48,13 @@ export const translations = {
       location: "Ubicación",
       seeAll: "Ver todos los proyectos",
     },
+    releases: {
+      title: "Lanzamientos",
+      subtitle: "Conoce nuestros próximos proyectos y lanzamientos exclusivos.",
+      viewMap: "Ver en mapa",
+      empty: "No hay lanzamientos disponibles.",
+      error: "Error al cargar lanzamientos. Inténtalo más tarde.",
+    },
     projectDetail: {
       backToProjects: "Volver a proyectos",
       aboutProject: "Sobre el proyecto",
