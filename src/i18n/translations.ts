@@ -49,11 +49,11 @@ export const translations = {
       seeAll: "Ver todos los proyectos",
     },
     releases: {
-      title: "Lanzamientos",
-      subtitle: "Conoce nuestros próximos proyectos y lanzamientos exclusivos.",
+      title: "Proyectos entregados",
+      subtitle: "Conoce los proyectos que ya hemos entregado, hitos cumplidos junto a nuestros inversionistas.",
       viewMap: "Ver en mapa",
-      empty: "No hay lanzamientos disponibles.",
-      error: "Error al cargar lanzamientos. Inténtalo más tarde.",
+      empty: "Aún no hay proyectos entregados para mostrar.",
+      error: "Error al cargar los proyectos entregados. Inténtalo más tarde.",
     },
     projectDetail: {
       backToProjects: "Volver a proyectos",
@@ -135,11 +135,11 @@ export const translations = {
       seeAll: "See all projects",
     },
     releases: {
-      title: "Releases",
-      subtitle: "Discover our upcoming projects and exclusive launches.",
+      title: "Delivered Projects",
+      subtitle: "Explore the projects we have already delivered — milestones achieved alongside our investors.",
       viewMap: "View on map",
-      empty: "No releases available.",
-      error: "Error loading releases. Please try again later.",
+      empty: "No delivered projects to display yet.",
+      error: "Error loading delivered projects. Please try again later.",
     },
     projectDetail: {
       backToProjects: "Back to projects",
