@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { MapPin, ExternalLink } from "lucide-react";
+import DOMPurify from "dompurify";
 import {
   Carousel,
   CarouselContent,
@@ -107,9 +108,10 @@ const Releases = () => {
                     </div>
 
                     {release.description && (
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
-                        {release.description}
-                      </p>
+                      <div
+                        className="prose prose-sm md:prose-base max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-ceiba-terra leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(release.description) }}
+                      />
                     )}
 
                     {release.googleMapLocation && (
