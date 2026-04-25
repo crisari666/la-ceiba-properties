@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import SEO from "@/components/SEO";
 
 import ProjectMediaGallery from "@/components/project/ProjectMediaGallery";
 import ProjectDescription from "@/components/project/ProjectDescription";
@@ -15,6 +16,10 @@ import LotCalculator from "@/components/project/LotCalculator";
 import ProjectAmenities from "@/components/project/ProjectAmenities";
 import ProjectSidebar from "@/components/project/ProjectSidebar";
 
+const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
+
+const stripHtml = (html: string) =>
+  html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -59,6 +64,49 @@ const ProjectDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {project && (() => {
+        const cleanDesc = stripHtml(project.description ?? "");
+        const seoImage = project.cardProject
+          ? `${IMAGE_BASE}${project.cardProject}`
+          : project.images?.[0]
+            ? `${IMAGE_BASE}${project.images[0]}`
+            : undefined;
+        const url = typeof window !== "undefined" ? window.location.href : undefined;
+        const jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: project.title,
+          description: cleanDesc,
+          image: seoImage,
+          url,
+          brand: { "@type": "Brand", name: "La Ceiba" },
+          offers: {
+            "@type": "Offer",
+            priceCurrency: "COP",
+            price: project.priceSell,
+            availability: "https://schema.org/InStock",
+            url,
+          },
+          ...(project.lat && project.lng
+            ? {
+                geo: {
+                  "@type": "GeoCoordinates",
+                  latitude: project.lat,
+                  longitude: project.lng,
+                },
+              }
+            : {}),
+        };
+        return (
+          <SEO
+            title={`${project.title} en ${project.city ?? project.location ?? "Colombia"}`}
+            description={cleanDesc || `Invierte en ${project.title}, un proyecto de La Ceiba.`}
+            image={seoImage}
+            type="product"
+            jsonLd={jsonLd}
+          />
+        );
+      })()}
       <Navbar />
 
       <ProjectMediaGallery project={project} />
