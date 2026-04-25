@@ -16,7 +16,7 @@ export const translations = {
       titleHighlight: "futuro",
       subtitle: "La forma más inteligente de invertir en bienes raíces. Lotes con alta valorización y respaldo de un holding inmobiliario sólido.",
       cta: "Ver Proyectos",
-      ctaSecondary: "Conoce más",
+      ctaSecondary: "Proyectos Entregados",
     },
     stats: {
       lotsSold: "Lotes Vendidos",
@@ -102,7 +102,7 @@ export const translations = {
       titleHighlight: "future",
       subtitle: "The smartest way to invest in real estate. Land lots with high appreciation backed by a solid real estate holding.",
       cta: "View Projects",
-      ctaSecondary: "Learn More",
+      ctaSecondary: "Delivered Projects",
     },
     stats: {
       lotsSold: "Lots Sold",
