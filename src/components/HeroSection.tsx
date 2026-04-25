@@ -56,14 +56,15 @@ const HeroSection = () => {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <a href="#nosotros">
+              <Link to="/releases">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-ceiba-warm hover:bg-ceiba-warm/90 text-white font-semibold text-base px-8"
+                  variant="outline"
+                  className="w-full sm:w-auto border-ceiba-warm/40 bg-transparent text-ceiba-warm hover:bg-ceiba-warm/10 hover:text-ceiba-warm font-semibold text-base px-8"
                 >
                   {t.hero.ctaSecondary}
                 </Button>
-              </a>
+              </Link>
             </div>
 
             <div className="flex flex-wrap gap-4 md:gap-6 mt-8 md:mt-14 justify-center lg:justify-start">
