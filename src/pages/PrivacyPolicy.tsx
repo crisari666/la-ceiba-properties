@@ -1,6 +1,12 @@
+import SEO from "@/components/SEO";
+
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEO
+        title="Política de Privacidad | La Ceiba"
+        description="Política de privacidad de Holding Inmobiliario La Ceiba Group S.A.S. Información sobre cómo recopilamos, usamos y protegemos sus datos."
+      />
       <div className="container mx-auto max-w-3xl px-4 py-20">
         <h1 className="text-3xl font-bold mb-2">Política de Privacidad</h1>
         <p className="text-muted-foreground mb-8">Fecha de vigencia: 8 de abril de 2026</p>

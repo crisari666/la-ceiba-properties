@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 
 const Projects = () => {
   const { t } = useLanguage();
@@ -14,6 +15,10 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${t.projects.title} | La Ceiba`}
+        description={t.projects.subtitle}
+      />
       <Navbar />
 
       <section className="pt-20 md:pt-28 pb-12 md:pb-20">
