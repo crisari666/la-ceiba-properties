@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { MapPin, ExternalLink } from "lucide-react";
 import DOMPurify from "dompurify";
+import SEO from "@/components/SEO";
 import {
   Carousel,
   CarouselContent,
@@ -20,6 +21,10 @@ const Releases = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${t.releases.title} | La Ceiba`}
+        description={t.releases.subtitle}
+      />
       <Navbar />
 
       <section className="pt-20 md:pt-28 pb-12 md:pb-20">

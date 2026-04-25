@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 
 // Lazy-load below-the-fold sections to reduce initial JS
 const ReferralsSection = lazy(() => import("@/components/ReferralsSection"));
@@ -57,6 +58,17 @@ const FeaturedProjects = () => {
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="La Ceiba | Holding Inmobiliario"
+        description="Invierte en lotes con alta valorización en Colombia. Programa de referidos con 2% de comisión. Conoce nuestros proyectos entregados."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "La Ceiba",
+          url: "https://laceiba.group/",
+          logo: "https://laceiba.group/ceiba-icon.png",
+        }}
+      />
       <Navbar />
       <HeroSection />
       <StatsSection />
