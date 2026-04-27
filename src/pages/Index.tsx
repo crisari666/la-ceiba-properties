@@ -64,9 +64,9 @@ const Index = () => {
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "La Ceiba",
-          url: "https://laceiba.group/",
-          logo: "https://laceiba.group/ceiba-icon.png",
+          name: "La Ceiba Group",
+          url: "https://laceiba.group",
+          logo: "https://laceiba.group/logo-corporativo.png",
         }}
       />
       <Navbar />
