@@ -10,7 +10,7 @@ const StatsSection = () => {
     { value: 21000, suffix: "+", label: t.stats.lotsSold, icon: CheckCircle2 },
     { value: 8, suffix: "", label: t.stats.projects, icon: Building2 },
     { value: 5, suffix: "", label: t.stats.cities, icon: MapPin },
-    { value: 1000, suffix: "+", label: t.stats.clients, icon: Users },
+    { value: 18000, suffix: "+", label: t.stats.clients, icon: Users },
   ];
 
   return (
