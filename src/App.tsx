@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/i18n/LanguageContext";
+import { LovableCurrencyProvider } from "@/i18n/CurrencyContext";
 import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
 
@@ -26,7 +27,8 @@ const queryClient = new QueryClient({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
-      <TooltipProvider>
+      <LovableCurrencyProvider>
+        <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -41,7 +43,8 @@ const App = () => (
             </Routes>
           </Suspense>
         </BrowserRouter>
-      </TooltipProvider>
+        </TooltipProvider>
+      </LovableCurrencyProvider>
     </LanguageProvider>
   </QueryClientProvider>
 );
