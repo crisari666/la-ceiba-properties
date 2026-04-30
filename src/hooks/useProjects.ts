@@ -14,6 +14,7 @@ export interface AmenityGroup {
 export interface LotOption {
   area: number;
   price: number;
+  priceUsd?: number;
 }
 
 export interface Project {
@@ -28,6 +29,7 @@ export interface Project {
   lat: number;
   lng: number;
   priceSell: number;
+  priceSellUsd?: number;
   deleted: boolean;
   commissionPercentage: number;
   commissionValue: number;

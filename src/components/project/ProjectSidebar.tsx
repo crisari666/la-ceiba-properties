@@ -1,17 +1,11 @@
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useCurrency } from "@/i18n/CurrencyContext";
 import type { Project, LotOption } from "@/hooks/useProjects";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { MapPin, Share2, Download } from "lucide-react";
 
 const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
-
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(price);
 
 interface Props {
   project: Project;
@@ -20,15 +14,20 @@ interface Props {
 
 const ProjectSidebar = ({ project, selectedLot }: Props) => {
   const { t } = useLanguage();
+  const { currency, toggleCurrency, formatPrice } = useCurrency();
 
   const hasPlane = !!project.plane;
   const isPlanePdf = hasPlane && project.plane.toLowerCase().endsWith(".pdf");
 
   // Dynamic commission based on selected lot
   const commissionPercentage = project.commissionPercentage ?? 0;
-  const commissionValue = selectedLot
-    ? (selectedLot.price * commissionPercentage) / 100
-    : project.commissionValue ?? 0;
+  const lotPrice = selectedLot?.price ?? project.priceSell;
+  const lotPriceUsd = selectedLot?.priceUsd ?? project.priceSellUsd;
+  const commissionValue = (lotPrice * commissionPercentage) / 100;
+  const commissionValueUsd =
+    typeof lotPriceUsd === "number"
+      ? (lotPriceUsd * commissionPercentage) / 100
+      : undefined;
 
   return (
     <div className="lg:col-span-1">
@@ -45,8 +44,17 @@ const ProjectSidebar = ({ project, selectedLot }: Props) => {
                 {t.projects.from}
               </span>
               <div className="text-3xl md:text-4xl font-display font-bold text-ceiba-terra mt-1">
-                {formatPrice(selectedLot?.price ?? project.priceSell)}
+                {formatPrice(lotPrice, lotPriceUsd)}
               </div>
+              <button
+                onClick={toggleCurrency}
+                className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-ceiba-terra transition-colors border border-border rounded-full px-3 py-1"
+                aria-label="Toggle currency"
+              >
+                <span className={currency === "COP" ? "text-ceiba-terra font-bold" : ""}>COP</span>
+                <span className="opacity-40">/</span>
+                <span className={currency === "USD" ? "text-ceiba-terra font-bold" : ""}>USD</span>
+              </button>
             </div>
             <button
               onClick={() => navigator.share?.({ title: project.title, url: window.location.href })}
@@ -66,7 +74,7 @@ const ProjectSidebar = ({ project, selectedLot }: Props) => {
               </div>
               {commissionValue > 0 && (
                 <span className="text-xs text-muted-foreground">
-                  ≈ {formatPrice(commissionValue)}
+                  ≈ {formatPrice(commissionValue, commissionValueUsd)}
                 </span>
               )}
             </div>
