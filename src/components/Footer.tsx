@@ -1,5 +1,6 @@
 import { useLanguage } from "@/i18n/LanguageContext";
 import { MapPin, Phone, Mail } from "lucide-react";
+import CurrencyToggle from "@/components/CurrencyToggle";
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -136,8 +137,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-6 text-center text-sm text-white/30">
-          © {new Date().getFullYear()} La Ceiba. {t.footer.rights}
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-white/30">
+          <span>© {new Date().getFullYear()} La Ceiba. {t.footer.rights}</span>
+          <CurrencyToggle variant="footer" />
         </div>
       </div>
     </footer>
