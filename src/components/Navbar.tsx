@@ -3,6 +3,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { Globe, Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import CurrencyToggle from "@/components/CurrencyToggle";
 
 const Navbar = () => {
   const { t, lang, toggleLang } = useLanguage();
@@ -38,6 +39,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <CurrencyToggle variant="navbar" />
           <button
             onClick={toggleLang}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted"
@@ -53,6 +55,7 @@ const Navbar = () => {
 
         {/* Mobile toggle */}
         <div className="flex md:hidden items-center gap-2">
+          <CurrencyToggle variant="navbar" className="!px-1.5 !py-1 text-xs" />
           <button
             onClick={toggleLang}
             className="flex items-center gap-1 text-xs text-muted-foreground p-2"
