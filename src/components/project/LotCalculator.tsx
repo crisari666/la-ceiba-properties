@@ -4,13 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Ruler, Calculator, Info } from "lucide-react";
 import { useState, useMemo } from "react";
-
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(price);
+import { useCurrency } from "@/i18n/CurrencyContext";
 
 interface Props {
   lotOptions: LotOption[];
@@ -22,6 +16,7 @@ interface Props {
 const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Props) => {
   const [selectedLot, setSelectedLot] = useState(0);
   const [cuotas, setCuotas] = useState(12);
+  const { currency, formatPrice } = useCurrency();
 
   const currentLot = lotOptions[selectedLot];
 
@@ -31,7 +26,24 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
     const remaining = totalPrice - separation;
     const monthlyPayment = remaining / cuotas;
     const lastPayment = remaining - monthlyPayment * (cuotas - 1);
-    return { totalPrice, separation, remaining, monthlyPayment, lastPayment, cuotas };
+    // USD calculations (only meaningful when priceUsd available)
+    const totalPriceUsd = currentLot.priceUsd;
+    const ratio = totalPriceUsd && totalPrice ? totalPriceUsd / totalPrice : undefined;
+    const separationUsd = ratio ? separation * ratio : undefined;
+    const remainingUsd = ratio ? remaining * ratio : undefined;
+    const monthlyPaymentUsd = ratio ? monthlyPayment * ratio : undefined;
+    return {
+      totalPrice,
+      totalPriceUsd,
+      separation,
+      separationUsd,
+      remaining,
+      remainingUsd,
+      monthlyPayment,
+      monthlyPaymentUsd,
+      lastPayment,
+      cuotas,
+    };
   }, [currentLot, separation, cuotas]);
 
   const handleLotSelect = (i: number) => {
@@ -63,7 +75,7 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
                 }`}
               >
                 <div className="text-lg font-bold">{lot.area}m²</div>
-                <div className="text-xs opacity-70">{formatPrice(lot.price)}</div>
+                <div className="text-xs opacity-70">{formatPrice(lot.price, lot.priceUsd)}</div>
               </button>
             ))}
           </div>
@@ -78,13 +90,13 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
             <div className="space-y-0 mt-4">
               <div className="flex items-center justify-between py-4 border-b border-white/10">
                 <span className="text-sm font-medium">Separación</span>
-                <span className="text-xl font-bold">{formatPrice(paymentCalc.separation)} <span className="text-xs font-normal text-white/60">COP</span></span>
+                <span className="text-xl font-bold">{formatPrice(paymentCalc.separation, paymentCalc.separationUsd)} <span className="text-xs font-normal text-white/60">{currency}</span></span>
               </div>
 
               <div className="py-4 border-b border-white/10">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm font-medium">{cuotas} mensualidades</span>
-                  <span className="text-xl font-bold">{formatPrice(paymentCalc.monthlyPayment)} <span className="text-xs font-normal text-white/60">COP</span></span>
+                  <span className="text-xl font-bold">{formatPrice(paymentCalc.monthlyPayment, paymentCalc.monthlyPaymentUsd)} <span className="text-xs font-normal text-white/60">{currency}</span></span>
                 </div>
                 <Slider
                   value={[cuotas]}
@@ -102,7 +114,7 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
 
               <div className="flex items-center justify-between py-4 border-b border-white/10">
                 <span className="text-sm font-medium">Intereses</span>
-                <span className="text-xl font-bold text-green-400">$0 <span className="text-xs font-normal text-green-400/60">COP</span></span>
+                <span className="text-xl font-bold text-green-400">$0 <span className="text-xs font-normal text-green-400/60">{currency}</span></span>
               </div>
 
               <div className="flex items-center justify-between py-4">
@@ -110,7 +122,7 @@ const LotCalculator = ({ lotOptions, separation, projectTitle, onLotChange }: Pr
                   <span className="text-sm font-medium">Precio total</span>
                   <Info className="w-3.5 h-3.5 text-white/40" />
                 </div>
-                <span className="text-xl font-bold">{formatPrice(paymentCalc.totalPrice)} <span className="text-xs font-normal text-white/60">COP</span></span>
+                <span className="text-xl font-bold">{formatPrice(paymentCalc.totalPrice, paymentCalc.totalPriceUsd)} <span className="text-xs font-normal text-white/60">{currency}</span></span>
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useCurrency } from "@/i18n/CurrencyContext";
 import type { Project } from "@/hooks/useProjects";
 import { MapPin, ArrowUpRight, Ruler } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,16 +7,9 @@ import { Link } from "react-router-dom";
 
 const IMAGE_BASE = "https://back.laceiba.group/rag/uploads//projects/";
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(price);
-};
-
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const { t } = useLanguage();
+  const { formatPrice } = useCurrency();
 
   const mainImage = project.cardProject
     ? `${IMAGE_BASE}${project.cardProject}`
@@ -81,7 +75,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 {t.projects.from}
               </span>
               <div className="text-lg md:text-xl font-bold text-ceiba-warm">
-                {formatPrice(project.priceSell)}
+                {formatPrice(project.priceSell, project.priceSellUsd)}
               </div>
             </div>
             <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-ceiba-warm flex items-center justify-center transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
