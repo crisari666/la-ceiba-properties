@@ -22,7 +22,7 @@ const CurrencyToggle = ({ variant = "navbar", className = "" }: Props) => {
       title={`Cambiar a ${currency === "COP" ? "USD" : "COP"}`}
     >
       <DollarSign className="w-4 h-4" />
-      {currency === "COP" ? "USD" : "COP"}
+      {currency}
     </button>
   );
 };
